@@ -1,0 +1,11 @@
+@startuml
+
+'https://plantuml.com/component-diagram
+
+[File]-->[Processor]
+[Processor]-->[Base64 decoder]
+[Base64 decoder]-->[ASN.1 Sequence Extraction]
+[x509 ]
+
+
+@enduml
