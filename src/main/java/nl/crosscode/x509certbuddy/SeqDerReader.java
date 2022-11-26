@@ -1,3 +1,5 @@
+package nl.crosscode.x509certbuddy;
+
 import org.jsoup.nodes.BooleanAttribute;
 
 import java.nio.ByteBuffer;

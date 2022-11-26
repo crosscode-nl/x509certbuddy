@@ -1,3 +1,5 @@
+package nl.crosscode.x509certbuddy;
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKey;

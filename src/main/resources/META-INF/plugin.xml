@@ -25,12 +25,12 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="x509CertAssistantFactory" id="x509_Cert_Assistant"/>
+        <toolWindow factoryClass="nl.crosscode.x509certbuddy.x509CertAssistantFactory" id="x509_Cert_Assistant"/>
     </extensions>
 
 
     <actions>
-        <action id="ReadCertsInFileAction" class="ReadCertsInFileAction" text="Read certs in file action"
+        <action id="ReadCertsInFileAction" class="nl.crosscode.x509certbuddy.ReadCertsInFileAction" text="Read certs in file action"
                 description="Read all certificates in current file and add them to the x509 Cert Buddy tool window">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl meta 5"/>

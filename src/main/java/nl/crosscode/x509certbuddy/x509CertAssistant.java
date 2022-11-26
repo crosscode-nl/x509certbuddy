@@ -1,3 +1,5 @@
+package nl.crosscode.x509certbuddy;
+
 import javax.swing.*;
 
 public class x509CertAssistant {
