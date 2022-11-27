@@ -1,1 +1,1 @@
-rootProject.name = "x509Certbuddy"
+rootProject.name = "x509certbuddy"

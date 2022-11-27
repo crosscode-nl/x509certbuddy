@@ -1,7 +1,6 @@
 package nl.crosscode.x509certbuddy;
 
-import org.jsoup.nodes.BooleanAttribute;
-
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
 
@@ -50,7 +49,7 @@ public class SeqDerReader {
         length[lengthIndex++] = b;
         if (lengthIndex==lengthBytes) {
             mode = Mode.VALUE;
-            valueLength = ByteBuffer.wrap(length).getInt();
+            valueLength = new BigInteger(length).intValue();
             value = new byte[valueLength];
         }
     }

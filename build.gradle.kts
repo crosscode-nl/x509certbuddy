@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.8.0"
+    id("org.jetbrains.intellij") version "1.10.0"
 }
 
 group = "nl.crosscode"
@@ -50,8 +50,11 @@ tasks {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+
+    testImplementation(platform("org.junit:junit-bom:5.9.0"))
     testImplementation(platform("io.cucumber:cucumber-bom:7.9.0"))
+
+    implementation("io.cucumber:cucumber-picocontainer:7.8.1");
 
     testImplementation("io.cucumber:cucumber-java")
     testImplementation("io.cucumber:cucumber-junit-platform-engine")
