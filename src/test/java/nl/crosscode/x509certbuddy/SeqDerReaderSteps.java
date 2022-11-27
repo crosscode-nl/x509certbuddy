@@ -48,4 +48,24 @@ public class SeqDerReaderSteps {
         String b64 = Base64.getEncoder().encodeToString(context.getSeqDerReader().getResult());
         assertEquals( base64x509,b64);
     }
+
+    @And("SeqDerReader is signaled EOF")
+    public void seqderreaderIsSignaledEOF() {
+        context.getSeqDerReader().setEof();
+    }
+
+    @Then("SeqDerReader IsDone is false")
+    public void seqderreaderIsDoneIsFalse() {
+        assertFalse(context.getSeqDerReader().isDone());
+    }
+
+    @And("SeqDerReader IsError is true")
+    public void seqderreaderIsErrorIsTrue() {
+        assertTrue(context.getSeqDerReader().isError());
+    }
+
+    @And("SeqDerReader getResult returns null")
+    public void seqderreaderGetResultReturnsNull() {
+        assertNull(context.getSeqDerReader().getResult());
+    }
 }
