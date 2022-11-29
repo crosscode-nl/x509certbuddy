@@ -57,6 +57,7 @@ dependencies {
     implementation("io.cucumber:cucumber-picocontainer:7.8.1");
 
     testImplementation("io.cucumber:cucumber-java")
+    testImplementation("io.cucumber:cucumber-java8")
     testImplementation("io.cucumber:cucumber-junit-platform-engine")
     testImplementation("org.junit.platform:junit-platform-suite")
     testImplementation("org.junit.jupiter:junit-jupiter")
