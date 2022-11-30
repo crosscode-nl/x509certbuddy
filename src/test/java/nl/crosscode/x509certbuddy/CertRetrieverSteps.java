@@ -49,7 +49,7 @@ public class CertRetrieverSteps {
 
     @Then("all certificates in file: {string} are returned")
     public void allCertificatesInFileAreReturned(String expectedCertsFile) {
-        try (InputStream inputStream = classLoader.getResourceAsStream("CertRetrieverTestData/"+expectedCertsFile)){
+        try (InputStream inputStream = classLoader.getResourceAsStream("nl/crosscode/x509certbuddy/CertRetrieverTestData/"+expectedCertsFile)){
             IOUtils.lineIterator(inputStream,StandardCharsets.UTF_8).forEachRemaining(cert -> {
                 assertTrue(context.getBase64certs().stream().anyMatch(c->c.equals(cert)));
             });

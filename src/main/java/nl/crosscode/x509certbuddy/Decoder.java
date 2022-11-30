@@ -5,7 +5,7 @@ import java.util.Base64;
 
 public class Decoder {
     private final String base64Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    private String data;
+    private String data = "";
     private Boolean readPadding = false;
     private Boolean done = false;
 

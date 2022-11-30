@@ -54,13 +54,15 @@ public class CertRetriever {
 
     private static void decodeToPotentialCerts(List<byte[]> potentialCerts, Decoder decoder) {
         SeqDerReader seqDerReader = new SeqDerReader();
-        byte[] data = decoder.tryDecode();
-        for (byte b : data) {
-            seqDerReader.read(b);
-        }
-        seqDerReader.setEof();
-        if (!seqDerReader.isError()) {
-            potentialCerts.add(seqDerReader.getResult());
-        }
+        try {
+            byte[] data = decoder.tryDecode();
+            for (byte b : data) {
+                seqDerReader.read(b);
+            }
+            seqDerReader.setEof();
+            if (!seqDerReader.isError()) {
+                potentialCerts.add(seqDerReader.getResult());
+            }
+        } catch (Exception e) {}
     }
 }
