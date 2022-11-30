@@ -3,37 +3,40 @@ package nl.crosscode.x509certbuddy;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKey;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.wm.ToolWindowManager;
 import org.bouncycastle.mime.encoding.Base64InputStream;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.List;
 
 public class ReadCertsInFileAction extends AnAction {
+    private static final Logger log = Logger.getInstance(ReadCertsInFileAction.class);
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
+        log.warn("Read certs in file action performed.");
         Project project = e.getProject();
         if (project==null) return;
         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
         if (editor==null) return;
         String allText = editor.getDocument().getText();
-        var b64dec = new Base64InputStream(new ByteArrayInputStream(allText.getBytes(StandardCharsets.UTF_8)));
         try {
-            int byteRead = b64dec.read();
-            if (byteRead==0x30) {
-                // create a new sequence decoder
+            CertRetriever certRetriever = new CertRetriever();
+            List<X509Certificate> certs = certRetriever.retrieveCerts(allText);
+            ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow("x509_Cert_Assistant");
+            if (tw!=null) {
+                x509CertAssistantFactory.getX509CertAssistant().addCerts(certs);
+                tw.show();
             }
-            if (byteRead==-1) {
-                // TODO: Finish reading
-                    return;
-            }
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-
+        } catch (CertificateException ex) {}
     }
 }

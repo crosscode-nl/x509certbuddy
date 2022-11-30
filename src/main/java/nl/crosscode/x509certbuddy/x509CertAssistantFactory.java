@@ -8,9 +8,15 @@ import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
 
 public class x509CertAssistantFactory implements ToolWindowFactory {
+    private static x509CertAssistant x509CertAssistant = new x509CertAssistant();
+
+    public static x509CertAssistant getX509CertAssistant() {
+        return x509CertAssistant;
+    }
+
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        Content content = ContentFactory.SERVICE.getInstance().createContent(new x509CertAssistant().getContent(),"Hi",false);
+        Content content = ContentFactory.SERVICE.getInstance().createContent(x509CertAssistant.getContent(),"Hi",false);
         toolWindow.getContentManager().addContent(content);
     }
 }

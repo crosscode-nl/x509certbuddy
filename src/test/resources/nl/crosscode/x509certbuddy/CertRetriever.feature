@@ -11,5 +11,5 @@ Feature: CertRetriever retrieves all certs in a full text
       | dual_base64_cert          |
       | quoted_dual_base64_cert   |
       | concat_dual_base64_cert   |
-      | pem_dual_base64_cert   |
+      | pem_dual_base64_cert      |
 

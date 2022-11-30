@@ -63,6 +63,7 @@ public class CertRetriever {
             if (!seqDerReader.isError()) {
                 potentialCerts.add(seqDerReader.getResult());
             }
-        } catch (Exception e) {}
+        } catch (OutOfMemoryError e) {}
+        catch (Exception e) {}
     }
 }
