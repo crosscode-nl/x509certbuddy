@@ -26,7 +26,7 @@ public class SeqDerReaderSteps {
     }
 
     @When("data is read into SeqDerReader")
-    public void dataIsReadIntoSeqDerReader() {
+    public void dataIsReadIntoSeqDerReader() throws Exception {
         byte[] input = Base64.getDecoder().decode(context.getInput());
         for (byte i : input) {
             context.getSeqDerReader().read(i);

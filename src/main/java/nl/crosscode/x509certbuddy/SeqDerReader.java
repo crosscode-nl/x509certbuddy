@@ -29,7 +29,7 @@ public class SeqDerReader {
 
     private byte[] result;
 
-    public void read(byte b) {
+    public void read(byte b) throws Exception {
         switch (mode) {
             case TAG: handleTag(b); return;
             case FIRST_LENGTH: handleFirstLength(b); return;
@@ -45,8 +45,11 @@ public class SeqDerReader {
         }
     }
 
-    private void handleExtendedLength(byte b) {
+    private void handleExtendedLength(byte b) throws Exception {
         length[lengthIndex++] = b;
+        if (lengthBytes>2) {
+            throw new Exception("Not a cert"); // Not sure, but use this as an optimisation for now.
+        }
         if (lengthIndex==lengthBytes) {
             mode = Mode.VALUE;
             valueLength = new BigInteger(length).intValue();

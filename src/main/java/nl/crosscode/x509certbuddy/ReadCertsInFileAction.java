@@ -32,7 +32,7 @@ public class ReadCertsInFileAction extends AnAction {
         try {
             CertRetriever certRetriever = new CertRetriever();
             List<X509Certificate> certs = certRetriever.retrieveCerts(allText);
-            ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow("x509_Cert_Assistant");
+            ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow("X.509 Cert Buddy");
             if (tw!=null) {
                 x509CertAssistantFactory.getX509CertAssistant().addCerts(certs);
                 tw.show();
