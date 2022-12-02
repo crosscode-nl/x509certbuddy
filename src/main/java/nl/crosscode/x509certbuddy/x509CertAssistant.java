@@ -7,6 +7,11 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +20,11 @@ import java.util.stream.Collectors;
 public class x509CertAssistant {
 
     private static final Logger log = Logger.getInstance(x509CertAssistant.class);
+    private String pemString;
+    private String base64String;
 
     public x509CertAssistant() {
+        /*
         DefaultTreeModel model = (DefaultTreeModel)certTree.getModel();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Certs",true);
         model.setRoot(root);
@@ -27,11 +35,41 @@ public class x509CertAssistant {
                 certDetails.setText("");
                 DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode)certTree.getLastSelectedPathComponent();
                 if (treeNode==null) return;
-                X509Certificate cert = (X509Certificate) treeNode.getUserObject();
+                X509Certificate cert = ((X509CertWrapper) treeNode.getUserObject()).getCert();
                 if (cert==null) return;
-                certDetails.setText(cert.toString());
+                String details = OpenSslWrapper.getCertDetails(cert);
+                if (details==null) {
+                    details = cert.toString();
+                }
+                certDetails.setText(details);
+                pemString = OpenSslWrapper.getPem(cert);
+                pem.setText(pemString);
+                base64String = OpenSslWrapper.getBase64(cert);
             }
         });
+        */
+/*
+        copyPem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (pemString==null) return;
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                StringSelection ss = new StringSelection(pemString);
+                clipboard.setContents(ss,ss);
+            }
+        });
+
+        copyBase64.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (base64String==null) return;
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                StringSelection ss = new StringSelection(base64String);
+                clipboard.setContents(ss,ss);
+            }
+        });
+
+ */
     }
 
 
@@ -39,7 +77,11 @@ public class x509CertAssistant {
 
     private JPanel rootPanel;
     private JTree certTree;
+    private JTabbedPane tabbedPane1;
     private JTextPane certDetails;
+    private JTextPane pem;
+    private JButton copyPem;
+    private JButton copyBase64;
 
     public JPanel getContent() {
         log.warn("getContent is called");
@@ -57,7 +99,7 @@ public class x509CertAssistant {
         for (X509Certificate cert : rootCerts) {
             log.warn(cert.getSubjectDN().getName());
             log.warn(cert.getIssuerDN().getName());
-            DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(cert);
+            DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(new X509CertWrapper(cert));
         //    treeNode.setUserObject(cert);
             addChildren(treeNode,cert,certs);
             root.add(treeNode);
@@ -80,9 +122,13 @@ public class x509CertAssistant {
     public void addChildren(DefaultMutableTreeNode treeNode, X509Certificate cert, List<X509Certificate> certs) {
         List<X509Certificate> children = certs.stream().filter(x->x.getIssuerDN().getName().equals(cert.getSubjectDN().getName())&&x!=cert).collect(Collectors.toList());
         for (X509Certificate child : children) {
-            DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(child);
+            DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(new X509CertWrapper(child));
             addChildren(childNode,child,certs);
             treeNode.add(childNode);
         }
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }
