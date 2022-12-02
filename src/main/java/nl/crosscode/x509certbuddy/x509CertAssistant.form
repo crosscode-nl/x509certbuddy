@@ -15,12 +15,28 @@
           </grid>
         </constraints>
         <properties>
-          <dividerLocation value="200"/>
+          <dividerLocation value="19"/>
           <orientation value="0"/>
         </properties>
         <border type="none"/>
         <children>
-          <scrollpane id="3097c">
+          <scrollpane id="5b60c">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="d7607" class="javax.swing.JTree" binding="certTree">
+                <constraints/>
+                <properties>
+                  <rootVisible value="false"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+          <grid id="8de0e" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <splitpane position="right"/>
             </constraints>
@@ -28,7 +44,9 @@
             <border type="none"/>
             <children>
               <tabbedpane id="a02c" binding="tabbedPane1" default-binding="true">
-                <constraints/>
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
@@ -57,7 +75,7 @@
                       </scrollpane>
                     </children>
                   </grid>
-                  <grid id="3977" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="3977" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <tabbedpane title="PEM"/>
@@ -65,68 +83,48 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="f2977" class="javax.swing.JTextPane" binding="pem">
+                      <scrollpane id="5bb9e">
                         <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="50"/>
-                          </grid>
-                        </constraints>
-                        <properties>
-                          <font name="Courier New"/>
-                        </properties>
-                      </component>
-                      <grid id="3ed7c" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                        <margin top="0" left="0" bottom="0" right="0"/>
-                        <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="1d16e" class="javax.swing.JButton" binding="copyPem">
-                            <constraints>
-                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                            </constraints>
+                          <component id="14e5c" class="javax.swing.JTextPane" binding="pem">
+                            <constraints/>
                             <properties>
-                              <text value="Copy PEM"/>
+                              <font name="Courier New"/>
                             </properties>
                           </component>
-                          <component id="a274b" class="javax.swing.JButton" binding="copyBase64">
-                            <constraints>
-                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="CopyBase64"/>
-                            </properties>
-                          </component>
-                          <hspacer id="b0a67">
-                            <constraints>
-                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                          </hspacer>
                         </children>
-                      </grid>
+                      </scrollpane>
                     </children>
                   </grid>
                 </children>
               </tabbedpane>
-            </children>
-          </scrollpane>
-          <scrollpane id="5b60c">
-            <constraints>
-              <splitpane position="left"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="d7607" class="javax.swing.JTree" binding="certTree">
-                <constraints/>
+              <component id="8cd5" class="javax.swing.JButton" binding="copyPem">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
                 <properties>
-                  <rootVisible value="false"/>
+                  <text value="Copy PEM"/>
+                </properties>
+              </component>
+              <hspacer id="9d909">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <component id="6601d" class="javax.swing.JButton" binding="copyBase64">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Copy Base64"/>
                 </properties>
               </component>
             </children>
-          </scrollpane>
+          </grid>
         </children>
       </splitpane>
     </children>
