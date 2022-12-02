@@ -7,6 +7,11 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +43,12 @@ public class x509CertAssistant {
                 certDetails.setText(details);
                 certDetails.setCaretPosition(0);
                 pemString = OpenSslWrapper.getPem(cert);
-            //    pem.setText(pemString);
+                pem.setText(pemString);
                 base64String = OpenSslWrapper.getBase64(cert);
+
             }
         });
-/*
+
         copyPem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -63,7 +69,7 @@ public class x509CertAssistant {
             }
         });
 
- */
+
     }
 
 
@@ -73,6 +79,9 @@ public class x509CertAssistant {
     private JTree certTree;
     private JTabbedPane tabbedPane1;
     private JTextPane certDetails;
+    private JTextPane pem;
+    private JButton copyPem;
+    private JButton copyBase64;
 
     public JPanel getContent() {
         log.warn("getContent is called");
