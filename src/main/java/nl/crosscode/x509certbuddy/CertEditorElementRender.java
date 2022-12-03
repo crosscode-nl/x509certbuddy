@@ -11,6 +11,7 @@ import java.security.cert.X509Certificate;
 
 public class CertEditorElementRender implements EditorCustomElementRenderer {
     private final X509Certificate certificate;
+    private Font font;
 
 
     public CertEditorElementRender(X509Certificate certificate) {
@@ -19,7 +20,7 @@ public class CertEditorElementRender implements EditorCustomElementRenderer {
 
     @Override
     public int calcWidthInPixels(@NotNull Inlay inlay) {
-        return 200;
+        return 600;
     }
 /*
     @Override
@@ -30,9 +31,16 @@ public class CertEditorElementRender implements EditorCustomElementRenderer {
     @Override
     public void paint(@NotNull Inlay inlay, @NotNull Graphics2D g, @NotNull Rectangle2D targetRegion, @NotNull TextAttributes textAttributes) {
      //   g.get
+        if (font==null) {
+            font = g.getFont().deriveFont(g.getFont().getStyle(), g.getFont().getSize()-1);
+        }
+        Font oldFont = g.getFont();
+        g.setFont(font);
+        int x = (int)inlay.getEditor().offsetToPoint2D(inlay.getOffset()).getX();
         g.setColor(Color.gray);
-        g.drawString(certificate.getSubjectDN().getName(), (int) targetRegion.getX()+10, (int) targetRegion.getMaxY()-2);
+         g.drawString(certificate.getSubjectDN().getName() + " (0x"+certificate.getSerialNumber().toString(16)+")", (int) targetRegion.getX()+1+x, (int) targetRegion.getMaxY()-2);
         EditorCustomElementRenderer.super.paint(inlay, g, targetRegion, textAttributes);
+        g.setFont(oldFont);
     }
 
 }

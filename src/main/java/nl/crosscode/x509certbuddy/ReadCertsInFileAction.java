@@ -85,6 +85,8 @@ public class ReadCertsInFileAction extends AnAction {
         for (RetrievedCert retrievedCert : retrievedCerts) {
             Editor editor = retrievedCert.getEditor();
             if (editor==null) continue;
+
+//            inlays.add(editor.getInlayModel().addInlineElement(retrievedCert.getOffset(), false,new CertEditorElementRender(retrievedCert.getCertificate())));
             inlays.add(editor.getInlayModel().addBlockElement(retrievedCert.getOffset(),false,true,0,new CertEditorElementRender(retrievedCert.getCertificate())));
         }
 

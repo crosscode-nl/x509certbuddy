@@ -17,7 +17,11 @@ public class Decoder {
     public Boolean add(char c) {
         // TODO: Alternative alphabets
         if (done) return true;
-        if (base64Alphabet.indexOf(c)==-1) return false;
+        if (c==' '||c=='\n'||c=='\r'||c=='\t') return false;
+        if (base64Alphabet.indexOf(c)==-1){
+            done= true;
+            return true;
+        };
         if (readPadding && c!='=') {
             done = true;
             return true;
