@@ -1,6 +1,5 @@
 package nl.crosscode.x509certbuddy;
 
-import java.util.Arrays;
 import java.util.Base64;
 
 public class Decoder {
@@ -8,6 +7,12 @@ public class Decoder {
     private String data = "";
     private Boolean readPadding = false;
     private Boolean done = false;
+
+    private int originalOffset;
+
+    public Decoder(int originalOffset) {
+        this.originalOffset = originalOffset;
+    }
 
     public Boolean add(char c) {
         // TODO: Alternative alphabets
@@ -28,5 +33,9 @@ public class Decoder {
 
     Boolean isDone() {
         return done;
+    }
+
+    public int getOriginalOffset() {
+        return originalOffset;
     }
 }

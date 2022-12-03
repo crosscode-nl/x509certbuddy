@@ -1,27 +1,30 @@
 package nl.crosscode.x509certbuddy;
 
+import com.intellij.openapi.editor.Editor;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CertRetriever {
-    CertificateFactory certFactory;
+    private final CertificateFactory certFactory;
+    private final Editor editor;
 
-    public CertRetriever() throws CertificateException {
+    public CertRetriever(Editor editor) throws CertificateException {
+        this.editor = editor;
         certFactory = CertificateFactory.getInstance("X.509");
     }
 
-    public List<X509Certificate> retrieveCerts(String text) throws CertificateException {
-        List<X509Certificate> certificates = new ArrayList<X509Certificate>();
-        for (byte[] potentialCert : findPotentialCerts(text)) {
+    public List<RetrievedCert> retrieveCerts(String text) throws CertificateException {
+        List<RetrievedCert> certificates = new ArrayList<>();
+        for (PotentialCert potentialCert : findPotentialCerts(text)) {
             try {
-                certificates.add(certFromBytes(potentialCert));
+                certificates.add(new RetrievedCert(editor, potentialCert.getOffset(), certFromBytes(potentialCert.getPotentialCert())));
             } catch (Exception e) {} // Ignoring it for now due to the brute force nature of cert finding.
         }
         return certificates;
@@ -32,12 +35,14 @@ public class CertRetriever {
         return (X509Certificate)certFactory.generateCertificate(in);
     }
 
-    private List<byte[]> findPotentialCerts(String text) {
-        List<byte[]> potentialCerts = new ArrayList<byte[]>();
+    private List<PotentialCert> findPotentialCerts(String text) {
+        List<PotentialCert> potentialCerts = new ArrayList<>();
         List<Decoder> decoders = new ArrayList<Decoder>();
+        int offset = -1;
         for (char c : text.toCharArray()) {
+            offset++;
             if (c=='M') {
-                decoders.add(new Decoder());
+                decoders.add(new Decoder(offset));
             }
             for (Decoder decoder : decoders) {
                 if (decoder.add(c)) { // decoder is certainly done
@@ -52,7 +57,7 @@ public class CertRetriever {
         return potentialCerts;
     }
 
-    private static void decodeToPotentialCerts(List<byte[]> potentialCerts, Decoder decoder) {
+    private static void decodeToPotentialCerts(List<PotentialCert> potentialCerts, Decoder decoder) {
         SeqDerReader seqDerReader = new SeqDerReader();
         try {
             byte[] data = decoder.tryDecode();
@@ -61,7 +66,7 @@ public class CertRetriever {
             }
             seqDerReader.setEof();
             if (!seqDerReader.isError()) {
-                potentialCerts.add(seqDerReader.getResult());
+                potentialCerts.add(new PotentialCert(seqDerReader.getResult(),decoder.getOriginalOffset()));
             }
         } catch (OutOfMemoryError e) {}
         catch (Exception e) {}

@@ -1,5 +1,6 @@
 package nl.crosscode.x509certbuddy;
 
+import com.intellij.openapi.editor.Editor;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -37,7 +38,8 @@ public class CertRetrieverSteps {
 
     @When("CertRetriever is used to find all certificates")
     public void certretrieverIsUsedToFindAllCertificates() throws CertificateException {
-        CertRetriever certRetriever = new CertRetriever();
+        Editor editor = null;
+        CertRetriever certRetriever = new CertRetriever(editor);
         context.setBase64certs(certRetriever.retrieveCerts(context.getText()).stream().map(c-> {
             try {
                 return Base64.getEncoder().encodeToString(c.getEncoded());
