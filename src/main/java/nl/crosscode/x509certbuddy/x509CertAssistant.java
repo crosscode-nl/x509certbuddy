@@ -45,7 +45,8 @@ public class x509CertAssistant {
                 pemString = OpenSslWrapper.getPem(cert);
                 pem.setText(pemString);
                 base64String = OpenSslWrapper.getBase64(cert);
-
+                asn1.setText(OpenSslWrapper.getAsn1(cert));
+                hex.setText(OpenSslWrapper.getHex(cert));
             }
         });
 
@@ -82,6 +83,8 @@ public class x509CertAssistant {
     private JTextPane pem;
     private JButton copyPem;
     private JButton copyBase64;
+    private JTextPane asn1;
+    private JTextPane hex;
 
     public JPanel getContent() {
         log.warn("getContent is called");

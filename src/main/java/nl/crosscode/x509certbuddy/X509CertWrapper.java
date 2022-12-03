@@ -14,7 +14,7 @@ public class X509CertWrapper {
     }
 
     public String toString() {
-        return cert.getSubjectDN().getName();
+        return cert.getSubjectDN().getName() + " (" + cert.getSerialNumber().toString(16)+")";
     }
 
 }
