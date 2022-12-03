@@ -1,12 +1,114 @@
-<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M32.0845 7.94025V4H24.0203V7.9896H16.029V4H7.91553V7.94025H4V36H16.0044V32.0045C16.0058 30.9457 16.4274 29.9308 17.1766 29.1826C17.9258 28.4345 18.9412 28.0143 20 28.0143C21.0588 28.0143 22.0743 28.4345 22.8234 29.1826C23.5726 29.9308 23.9942 30.9457 23.9956 32.0045V36H36V7.94025H32.0845Z"
-          fill="url(#paint0_linear)"/>
-    <defs>
-        <linearGradient id="paint0_linear" x1="2.94192" y1="4.89955" x2="37.7772" y2="39.7345"
-                        gradientUnits="userSpaceOnUse">
-            <stop offset="0.15937" stop-color="#3BEA62"/>
-            <stop offset="0.5404" stop-color="#3C99CC"/>
-            <stop offset="0.93739" stop-color="#6B57FF"/>
-        </linearGradient>
-    </defs>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="40"
+   height="40"
+   viewBox="0 0 40 40"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e, 2022-07-14)"
+   sodipodi:docname="pluginIcon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="true"
+     inkscape:zoom="8.4036921"
+     inkscape:cx="43.373793"
+     inkscape:cy="12.791996"
+     inkscape:window-width="1390"
+     inkscape:window-height="1205"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid1658" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#1e90ff;fill-opacity:0;stroke:#389fd6;stroke-opacity:1"
+       id="rect1188"
+       width="38"
+       height="38"
+       x="1"
+       y="1" />
+    <path
+       style="fill:#1e90ff;fill-opacity:0;stroke:#389fd6;stroke-width:0.977008;stroke-opacity:1"
+       d="M 30,33 V 22.5"
+       id="path3804" />
+    <path
+       style="fill:#1e90ff;fill-opacity:0;stroke:#389fd6;stroke-width:0.947484;stroke-opacity:1"
+       d="M 26,33 V 23.125"
+       id="path3806" />
+    <ellipse
+       style="fill:#1e90ff;fill-opacity:0;stroke:#389fd6;stroke-width:1.00249;stroke-opacity:1"
+       id="path3810"
+       cx="29.299999"
+       cy="18.089775"
+       rx="5.5"
+       ry="5.0249376"
+       transform="matrix(1,0,-0.09950372,0.99503719,0,0)" />
+    <ellipse
+       style="fill:#1e90ff;fill-opacity:0;stroke:#389fd6;stroke-width:0.773905;stroke-opacity:1"
+       id="path3812"
+       cx="27.863047"
+       cy="18"
+       rx="5.8630471"
+       ry="5.3630471" />
+    <text
+       xml:space="preserve"
+       style="fill:#1e90ff;fill-opacity:0;stroke:#389fd6;stroke-opacity:1"
+       x="3.8222656"
+       y="30.318359"
+       id="text3847"><tspan
+         sodipodi:role="line"
+         id="tspan3845"
+         x="3.8222656"
+         y="30.318359">64</tspan></text>
+    <rect
+       style="fill:#1e90ff;fill-opacity:0;stroke:#389fd6;stroke-width:1.07938;stroke-opacity:1"
+       id="rect3849"
+       width="13.920621"
+       height="0.92062193"
+       x="4.0396891"
+       y="7.0793781" />
+    <rect
+       style="fill:#1e90ff;fill-opacity:0;stroke:#389fd6;stroke-width:1.07938;stroke-opacity:1"
+       id="rect3849-7"
+       width="13.920621"
+       height="0.92062193"
+       x="4.0396895"
+       y="15.079378" />
+    <rect
+       style="fill:#1e90ff;fill-opacity:0;stroke:#389fd6;stroke-width:1.07938;stroke-opacity:1"
+       id="rect3849-8"
+       width="13.920621"
+       height="0.92062193"
+       x="4"
+       y="11.079378"
+       inkscape:transform-center-x="4.1648361"
+       inkscape:transform-center-y="-6.8422307" />
+    <path
+       style="fill:#1e90ff;fill-opacity:0;stroke:#389fd6;stroke-opacity:1"
+       d="m 26,32.732261 2,-3 2,3"
+       id="path3908" />
+  </g>
 </svg>

@@ -17,9 +17,15 @@
     Alpha version of a toolkit that scans files for X.509 certificates.<br/>
     It tries to bruteforce decode any Base64 starting with M.</br>
     Next it tries to decode the Base64 data and checks if it finds an ASN.1 sequence.<br/>
-    If so, and the length makes sense, it will try to decode a X.509 certificate.<br/>
+    If so, and the length makes sense, it will try to decode an X.509 certificate.<br/>
     The certificates are placed in a tree view in the tool window. <br/>
-    Here you can view the cert hierarchy and details.
+    Here you can view the cert hierarchy and details.<br/>
+    <br/>
+    Cert buddy uses hexdump and openssl, and needs those for the plugin to fully function.<br/>
+    Without those applications not all information and functionality will be available<br/>
+    <br/>
+    To use this plugin use the action `Display Certs` to display all certs.<br/>
+    Use the tool window to view cert details, debug and/or convert the certs.
   ]]></description>
 
     <!-- Product and plugin compatibility requirements.
@@ -34,7 +40,7 @@
 
 
     <actions>
-        <action id="ReadCertsInFileAction" class="nl.crosscode.x509certbuddy.ReadCertsInFileAction" text="Read certs in file action"
+        <action id="ReadCertsInFileAction" class="nl.crosscode.x509certbuddy.ReadCertsInFileAction" text="Display Certs"
                 description="Read all certificates in current file and add them to the x509 Cert Buddy tool window">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl meta 5"/>
