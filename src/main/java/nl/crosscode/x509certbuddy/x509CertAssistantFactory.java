@@ -16,7 +16,7 @@ public class x509CertAssistantFactory implements ToolWindowFactory {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        Content content = ContentFactory.SERVICE.getInstance().createContent(x509CertAssistant.getContent(),"",false);
+        Content content = toolWindow.getContentManager().getFactory().createContent(x509CertAssistant.getContent(),"",false);
         toolWindow.getContentManager().addContent(content);
     }
 }

@@ -1,7 +1,6 @@
 package nl.crosscode.x509certbuddy;
 
 import java.math.BigInteger;
-import java.nio.ByteBuffer;
 
 
 public class SeqDerReader {
