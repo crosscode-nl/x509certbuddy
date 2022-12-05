@@ -4,10 +4,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
+import nl.crosscode.x509certbuddy.ui.x509CertAssistant;
 import org.jetbrains.annotations.NotNull;
 
 public class x509CertAssistantFactory implements ToolWindowFactory {
-    private static x509CertAssistant x509CertAssistant = new x509CertAssistant();
+    private static nl.crosscode.x509certbuddy.ui.x509CertAssistant x509CertAssistant = new x509CertAssistant();
 
     public static x509CertAssistant getX509CertAssistant() {
         return x509CertAssistant;

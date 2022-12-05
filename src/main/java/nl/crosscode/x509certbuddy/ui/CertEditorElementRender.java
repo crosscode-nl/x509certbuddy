@@ -1,4 +1,4 @@
-package nl.crosscode.x509certbuddy;
+package nl.crosscode.x509certbuddy.ui;
 
 import com.intellij.openapi.editor.EditorCustomElementRenderer;
 import com.intellij.openapi.editor.Inlay;

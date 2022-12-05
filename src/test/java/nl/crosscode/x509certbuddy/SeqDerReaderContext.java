@@ -1,5 +1,7 @@
 package nl.crosscode.x509certbuddy;
 
+import nl.crosscode.x509certbuddy.decoder.SeqDerReader;
+
 public class SeqDerReaderContext {
     private String input;
 

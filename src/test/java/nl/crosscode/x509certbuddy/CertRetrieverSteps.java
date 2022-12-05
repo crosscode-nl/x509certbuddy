@@ -4,6 +4,7 @@ import com.intellij.openapi.editor.Editor;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import nl.crosscode.x509certbuddy.decoder.CertRetriever;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;

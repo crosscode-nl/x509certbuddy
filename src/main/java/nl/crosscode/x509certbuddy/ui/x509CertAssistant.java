@@ -1,6 +1,10 @@
-package nl.crosscode.x509certbuddy;
+package nl.crosscode.x509certbuddy.ui;
 
 import com.intellij.openapi.diagnostic.Logger;
+import nl.crosscode.x509certbuddy.wrappers.X509CertWrapper;
+import nl.crosscode.x509certbuddy.utils.X509Utils;
+import nl.crosscode.x509certbuddy.wrappers.HexDumpWrapper;
+import nl.crosscode.x509certbuddy.wrappers.OpenSslWrapper;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -44,9 +48,9 @@ public class x509CertAssistant {
                 certDetails.setCaretPosition(0);
                 pemString = OpenSslWrapper.getPem(cert);
                 pem.setText(pemString);
-                base64String = OpenSslWrapper.getBase64(cert);
+                base64String = X509Utils.getBase64(cert);
                 asn1.setText(OpenSslWrapper.getAsn1(cert));
-                hex.setText(OpenSslWrapper.getHex(cert));
+                hex.setText(HexDumpWrapper.getHex(cert));
             }
         });
 

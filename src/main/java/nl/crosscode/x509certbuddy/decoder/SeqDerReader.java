@@ -1,4 +1,4 @@
-package nl.crosscode.x509certbuddy;
+package nl.crosscode.x509certbuddy.decoder;
 
 import java.math.BigInteger;
 

@@ -1,4 +1,4 @@
-package nl.crosscode.x509certbuddy;
+package nl.crosscode.x509certbuddy.wrappers;
 
 import java.security.cert.X509Certificate;
 

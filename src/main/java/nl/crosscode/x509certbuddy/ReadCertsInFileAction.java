@@ -9,6 +9,9 @@ import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
+import nl.crosscode.x509certbuddy.decoder.CertRetriever;
+import nl.crosscode.x509certbuddy.decoder.RetrievedCert;
+import nl.crosscode.x509certbuddy.ui.CertEditorElementRender;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.cert.CertificateException;
@@ -26,31 +29,6 @@ public class ReadCertsInFileAction extends AnAction {
         if (project==null) return;
         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
         if (editor==null) return;
-       // editor.getInlayModel().addBlockElement(0,false,true,0,new CertEditorElementRender());
-        /*
-        Inlay<EditorCustomElementRenderer> hello = editor.getInlayModel().addBlockElement(00, false, true, 0, new EditorCustomElementRenderer() {
-            @Override
-            public int calcWidthInPixels(@NotNull Inlay inlay) {
-                return 200;
-            }
-
-            @Override
-            public int calcHeightInPixels(@NotNull Inlay inlay) {
-                return 200;
-            }
-
-            @Override
-            public void paint(@NotNull Inlay inlay, @NotNull Graphics2D g, @NotNull Rectangle2D targetRegion, @NotNull TextAttributes textAttributes) {
-                g.drawString("Hello", (int) targetRegion.getX(), (int) targetRegion.getMaxY());
-                EditorCustomElementRenderer.super.paint(inlay, g, targetRegion, textAttributes);
-            }
-        });
-
-        hello.dispose();
-        */
-        //  TextAttributes color = editor.getColorsScheme().getAttributes(EditorColors.SEARCH_RESULT_ATTRIBUTES);
-        //    RangeHighlighter rh = editor.getMarkupModel().addRangeHighlighter(10,20, HighlighterLayer.ADDITIONAL_SYNTAX+1,color,HighlighterTargetArea.EXACT_RANGE);
-//        editor.getMarkupModel().removeHighlighter(rh);
 
         String allText = editor.getDocument().getText();
         try {
@@ -72,7 +50,6 @@ public class ReadCertsInFileAction extends AnAction {
             Editor editor = retrievedCert.getEditor();
             if (editor==null) continue;
 
-//            inlays.add(editor.getInlayModel().addInlineElement(retrievedCert.getOffset(), false,new CertEditorElementRender(retrievedCert.getCertificate())));
             inlays.add(editor.getInlayModel().addBlockElement(retrievedCert.getOffset(),false,true,0,new CertEditorElementRender(retrievedCert.getCertificate())));
         }
 

@@ -1,4 +1,4 @@
-package nl.crosscode.x509certbuddy;
+package nl.crosscode.x509certbuddy.decoder;
 
 public class PotentialCert {
     private byte[] potentialCert;
