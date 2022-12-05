@@ -51,6 +51,7 @@ public class x509CertAssistant {
                 base64String = X509Utils.getBase64(cert);
                 asn1.setText(OpenSslWrapper.getAsn1(cert));
                 hex.setText(HexDumpWrapper.getHex(cert));
+                validation.setText(OpenSslWrapper.getValidation(cert,x509Certificates));
             }
         });
 
@@ -89,6 +90,7 @@ public class x509CertAssistant {
     private JButton copyBase64;
     private JTextPane asn1;
     private JTextPane hex;
+    private JTextPane validation;
 
     public JPanel getContent() {
         log.warn("getContent is called");
