@@ -1,5 +1,7 @@
 package nl.crosscode.x509certbuddy.decoder;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import java.util.Base64;
 
 public class Decoder {
@@ -7,6 +9,8 @@ public class Decoder {
     private String data = "";
     private Boolean readPadding = false;
     private Boolean done = false;
+
+    private Boolean escapeMode = false;
 
     private int originalOffset;
 
@@ -17,7 +21,19 @@ public class Decoder {
     public Boolean add(char c) {
         // TODO: Alternative alphabets
         if (done) return true;
+        if (escapeMode) {
+            String escape = "\\"+c;
+            String result = StringEscapeUtils.unescapeJava(escape);
+            if (result.length()==1) {
+                c = result.charAt(0);
+            }
+            escapeMode = false;
+        } else if (c=='\\') {
+            escapeMode = true;
+            return false;
+        }
         if (c==' '||c=='\n'||c=='\r'||c=='\t') return false;
+
         if (base64Alphabet.indexOf(c)==-1){
             done= true;
             return true;

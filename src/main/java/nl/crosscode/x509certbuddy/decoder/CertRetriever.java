@@ -1,6 +1,8 @@
 package nl.crosscode.x509certbuddy.decoder;
 
 import com.intellij.openapi.editor.Editor;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.parser.ParserException;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -9,6 +11,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CertRetriever {
@@ -20,14 +23,54 @@ public class CertRetriever {
         certFactory = CertificateFactory.getInstance("X.509");
     }
 
+    public List<RetrievedCert> retrievedCerts(byte[] data) throws CertificateException {
+        return retrieveCerts(new String(data));
+    }
+
     public List<RetrievedCert> retrieveCerts(String text) throws CertificateException {
+
         List<RetrievedCert> certificates = new ArrayList<>();
+     //   if (getCertsFromYaml(text, certificates)) return certificates;
+        getCertsFromText(text, certificates,0);
+        return certificates;
+    }
+/*
+    private boolean getCertsFromYaml(String text, List<RetrievedCert> certificates) {
+        try {
+            Yaml yaml = new Yaml();
+            Map<Object, Object> doc = yaml.load(text);
+            if (doc == null) {
+                return false;
+            }
+            List<String> results = new ArrayList<>();
+            parseYaml(doc, results);
+            for (String result : results) {
+                getCertsFromText(result, certificates,0);
+            }
+            return true;
+        } catch (ParserException e) {
+            return false;
+        }
+    }
+
+    private void parseYaml(Map<Object,Object> doc, List<String> results) {
+        for (Object key : doc.keySet()) {
+            Object value = doc.get(key);
+            if (value instanceof String) {
+                results.add((String)value);
+            }
+            if (value instanceof Map) {
+                parseYaml((Map<Object, Object>) value,results);
+            }
+        }
+    }
+*/
+    private void getCertsFromText(String text, List<RetrievedCert> certificates, int baseOffset) {
         for (PotentialCert potentialCert : findPotentialCerts(text)) {
             try {
-                certificates.add(new RetrievedCert(editor, potentialCert.getOffset(), certFromBytes(potentialCert.getPotentialCert())));
+                certificates.add(new RetrievedCert(editor, potentialCert.getOffset()+baseOffset, certFromBytes(potentialCert.getPotentialCert())));
             } catch (Exception e) {} // Ignoring it for now due to the brute force nature of cert finding.
         }
-        return certificates;
     }
 
     private X509Certificate certFromBytes(byte[] bytes) throws CertificateException {
