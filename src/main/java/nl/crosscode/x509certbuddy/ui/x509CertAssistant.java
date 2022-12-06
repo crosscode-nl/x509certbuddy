@@ -16,8 +16,10 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,7 @@ public class x509CertAssistant {
     private String base64String;
 
     public x509CertAssistant() {
+        log.warn("Constructed x509CertAssistant");
         DefaultTreeModel model = (DefaultTreeModel)certTree.getModel();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Certs",true);
         model.setRoot(root);
@@ -101,16 +104,36 @@ public class x509CertAssistant {
     public void addCerts(List<X509Certificate> certs) {
         log.warn("Adding certs");
         x509Certificates.addAll(certs);
+        removeDuplicateCerts();
+        buildTree();
+    }
+
+    private void removeDuplicateCerts() {
+        List<X509Certificate> certs = new ArrayList<>();
+        for (X509Certificate cert : x509Certificates) {
+           if (certs.stream().anyMatch(x-> {
+               try {
+                   return Arrays.equals(x.getEncoded(),cert.getEncoded());
+               } catch (CertificateEncodingException e) {
+                   return false;
+               }
+           })) continue;
+           certs.add(cert);
+        }
+        x509Certificates = certs;
+    }
+
+    private void buildTree() {
         DefaultTreeModel model = (DefaultTreeModel)certTree.getModel();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Certs",true);
         root.removeAllChildren();
-        List<X509Certificate> rootCerts = certs.stream().filter(x-> !certs.stream().anyMatch(y->y.getSubjectDN().getName().equals(x.getIssuerDN().getName())&&x!=y)).collect(Collectors.toList());
+        List<X509Certificate> rootCerts = x509Certificates.stream().filter(x-> !x509Certificates.stream().anyMatch(y->y.getSubjectDN().getName().equals(x.getIssuerDN().getName())&&x!=y)).collect(Collectors.toList());
         for (X509Certificate cert : rootCerts) {
             log.warn(cert.getSubjectDN().getName());
             log.warn(cert.getIssuerDN().getName());
             DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(new X509CertWrapper(cert));
         //    treeNode.setUserObject(cert);
-            addChildren(treeNode,cert,certs);
+            addChildren(treeNode,cert,x509Certificates);
             root.add(treeNode);
         }
         model.setRoot(root);
