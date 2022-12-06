@@ -51,7 +51,6 @@ tasks {
 
 dependencies {
 
-    implementation("org.yaml:snakeyaml:1.33")
     testImplementation(platform("org.junit:junit-bom:5.9.0"))
     testImplementation(platform("io.cucumber:cucumber-bom:7.9.0"))
 
