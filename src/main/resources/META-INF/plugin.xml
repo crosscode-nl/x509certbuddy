@@ -28,6 +28,21 @@
     Use the tool window to view cert details, debug and/or convert the certs.
   ]]></description>
 
+    <change-notes>
+        <![CDATA[
+        <ul>
+            <li>TextPanes readonly</li>
+            <li>Verify certificates</li>
+            <li>Parse certificates with escaped linefeeds in json strings</li>
+            <li>No longer remove certs when reading them from a document</li>
+            <li>Remove duplicate certificates from the tree</li>
+            <li>UI improvements</li>
+            <li>Allow removal of single or all certificates from the tree</li>
+            <li>Allow drop of files with certificates (PEM/BASE64)</li>
+        </ul>
+        ]]>
+    </change-notes>
+
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>

@@ -1,4 +1,4 @@
-# 0.2
+# 0.2 - 2022-12-07
 
 * TextPanes readonly
 * Verify certificates
