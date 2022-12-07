@@ -53,10 +53,10 @@ public class x509CertAssistant {
     }
 
     private void treeSelectionChanged(TreeSelectionEvent e) {
-        certDetailsTextPane.setText("");
         DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) certTree.getLastSelectedPathComponent();
         if (treeNode == null) {
             selectedCertificate = null;
+            updateFieldsWithCertDetails();
             itemSelected(false);
             return;
         }
@@ -66,7 +66,14 @@ public class x509CertAssistant {
     }
 
     private void updateFieldsWithCertDetails() {
-        if (selectedCertificate == null) return;
+        certDetailsTextPane.setText(null);
+        pemTextPane.setText(null);
+        asn1TextPane.setText(null);
+        hexTextPane.setText(null);
+        validationTextPane.setText(null);
+        if (selectedCertificate == null) {
+            return;
+        }
         String details = OpenSslWrapper.getCertDetails(selectedCertificate);
         if (details == null) {
             details = selectedCertificate.toString();
