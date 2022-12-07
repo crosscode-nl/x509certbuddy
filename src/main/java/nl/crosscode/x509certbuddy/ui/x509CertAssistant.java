@@ -5,7 +5,6 @@ import nl.crosscode.x509certbuddy.wrappers.X509CertWrapper;
 import nl.crosscode.x509certbuddy.utils.X509Utils;
 import nl.crosscode.x509certbuddy.wrappers.HexDumpWrapper;
 import nl.crosscode.x509certbuddy.wrappers.OpenSslWrapper;
-import org.bouncycastle.jcajce.provider.asymmetric.X509;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -31,7 +30,6 @@ public class x509CertAssistant {
     private X509Certificate selectedCertificate = null;
     private JPanel rootPanel;
     private JTree certTree;
-    private JTabbedPane tabbedPane1;
     private JTextPane certDetailsTextPane;
     private JTextPane pemTextPane;
     private JButton copyPEMButton;
