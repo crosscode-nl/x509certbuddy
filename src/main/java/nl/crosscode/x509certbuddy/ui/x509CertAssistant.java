@@ -71,9 +71,7 @@ public class x509CertAssistant {
         asn1TextPane.setText(null);
         hexTextPane.setText(null);
         validationTextPane.setText(null);
-        if (selectedCertificate == null) {
-            return;
-        }
+        if (selectedCertificate == null) return;
         String details = OpenSslWrapper.getCertDetails(selectedCertificate);
         if (details == null) {
             details = selectedCertificate.toString();
@@ -155,7 +153,6 @@ public class x509CertAssistant {
             log.warn(cert.getSubjectDN().getName());
             log.warn(cert.getIssuerDN().getName());
             DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(new X509CertWrapper(cert));
-            //    treeNode.setUserObject(cert);
             addChildren(treeNode, cert, x509Certificates);
             root.add(treeNode);
         }
