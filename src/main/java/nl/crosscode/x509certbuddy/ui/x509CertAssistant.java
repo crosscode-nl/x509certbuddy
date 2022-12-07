@@ -1,10 +1,13 @@
 package nl.crosscode.x509certbuddy.ui;
 
 import com.intellij.openapi.diagnostic.Logger;
+import nl.crosscode.x509certbuddy.decoder.CertRetriever;
+import nl.crosscode.x509certbuddy.decoder.RetrievedCert;
 import nl.crosscode.x509certbuddy.wrappers.X509CertWrapper;
 import nl.crosscode.x509certbuddy.utils.X509Utils;
 import nl.crosscode.x509certbuddy.wrappers.HexDumpWrapper;
 import nl.crosscode.x509certbuddy.wrappers.OpenSslWrapper;
+import org.apache.commons.io.FileUtils;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -13,8 +16,12 @@ import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.awt.dnd.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +57,18 @@ public class x509CertAssistant {
         copyBase64Button.addActionListener(this::copyBase64);
         removeCertButton.addActionListener(this::removeCert);
         clearButton.addActionListener(this::clear);
+        new DropTarget(rootPanel, new FileDropTargetListener(this::filesToProcess));
+    }
+
+    private void filesToProcess(List<File> files) {
+        for (File file : files) {
+            try {
+                byte[] data = FileUtils.readFileToByteArray(file);
+                CertRetriever certRetriever = new CertRetriever(null);
+                addCerts(certRetriever.retrievedCerts(data).stream().map(RetrievedCert::getCertificate).collect(Collectors.toList()));
+            } catch (IOException | CertificateException e) {
+            }
+        }
     }
 
     private void treeSelectionChanged(TreeSelectionEvent e) {

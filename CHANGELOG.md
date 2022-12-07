@@ -7,5 +7,6 @@
 * Remove duplicate certificates from the tree
 * UI improvements
 * Allow removal of single or all certificates from the tree
+* Allow drop of files with certificates (PEM/BASE64)
 
 # 0.1
