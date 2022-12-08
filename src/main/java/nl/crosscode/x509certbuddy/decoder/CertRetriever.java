@@ -5,14 +5,18 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.parser.ParserException;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CertRetriever {
     private final CertificateFactory certFactory;
@@ -24,6 +28,13 @@ public class CertRetriever {
     }
 
     public List<RetrievedCert> retrievedCerts(byte[] data) throws CertificateException {
+        if (data[0]==0x30) {
+            try (ByteArrayInputStream bais = new ByteArrayInputStream(data)) {
+                X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(bais);
+                return List.of(new RetrievedCert(null,0,cert));
+            } catch (IOException | CertificateException e) {
+            }
+        }
         return retrieveCerts(new String(data));
     }
 
