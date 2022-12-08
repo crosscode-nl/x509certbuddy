@@ -1,3 +1,7 @@
+# 0.3
+
+* When dropping files, DER encoded X.509 certificates are now accepted.
+
 # 0.2 - 2022-12-07
 
 * TextPanes readonly
