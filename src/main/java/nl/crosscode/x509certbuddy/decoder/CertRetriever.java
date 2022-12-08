@@ -28,6 +28,7 @@ public class CertRetriever {
     }
 
     public List<RetrievedCert> retrievedCerts(byte[] data) throws CertificateException {
+        if (data==null||data.length<64) return List.of();
         if (data[0]==0x30) {
             try (ByteArrayInputStream bais = new ByteArrayInputStream(data)) {
                 X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(bais);

@@ -53,6 +53,7 @@
                           <component id="7fce1" class="javax.swing.JTextPane" binding="certDetailsTextPane">
                             <constraints/>
                             <properties>
+                              <editable value="false"/>
                               <font name="Courier New"/>
                             </properties>
                           </component>
