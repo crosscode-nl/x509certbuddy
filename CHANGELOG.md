@@ -1,7 +1,9 @@
 # 0.3
 
-* When dropping files, DER encoded X.509 certificates are now accepted.
-* Fix editable detail TextPane. 
+* When dropping files, DER encoded X.509 certificates are now accepted
+* Fix editable detail TextPane
+* Updated icons
+* Moved cert read action to editor context menu
 
 # 0.2 - 2022-12-07
 

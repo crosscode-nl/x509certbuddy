@@ -50,14 +50,14 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="nl.crosscode.x509certbuddy.x509CertAssistantFactory" id="X.509 Cert Buddy" icon="MyIcons.CertBuddy"/>
+        <toolWindow factoryClass="nl.crosscode.x509certbuddy.x509CertAssistantFactory" id="X.509 Cert Buddy" icon="CertBuddyIcons.CertBuddyToolwindow" />
     </extensions>
-
 
     <actions>
         <action id="ReadCertsInFileAction" class="nl.crosscode.x509certbuddy.ReadCertsInFileAction" text="Display Certs"
-                description="Read all certificates in current file and add them to the x509 Cert Buddy tool window">
-            <add-to-group group-id="ToolsMenu" anchor="first"/>
+                description="Read all certificates in current file and add them to the x509 Cert Buddy tool window"
+                icon="CertBuddyIcons.CertBuddyAction">
+            <add-to-group group-id="EditorPopupMenu" anchor="last" />
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl meta 5"/>
         </action>
     </actions>
