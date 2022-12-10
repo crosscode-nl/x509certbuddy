@@ -1,22 +1,16 @@
 package nl.crosscode.x509certbuddy.decoder;
 
 import com.intellij.openapi.editor.Editor;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.parser.ParserException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CertRetriever {
     private final CertificateFactory certFactory;
@@ -42,45 +36,14 @@ public class CertRetriever {
     public List<RetrievedCert> retrieveCerts(String text) throws CertificateException {
 
         List<RetrievedCert> certificates = new ArrayList<>();
-     //   if (getCertsFromYaml(text, certificates)) return certificates;
-        getCertsFromText(text, certificates,0);
+        getCertsFromText(text, certificates);
         return certificates;
     }
-/*
-    private boolean getCertsFromYaml(String text, List<RetrievedCert> certificates) {
-        try {
-            Yaml yaml = new Yaml();
-            Map<Object, Object> doc = yaml.load(text);
-            if (doc == null) {
-                return false;
-            }
-            List<String> results = new ArrayList<>();
-            parseYaml(doc, results);
-            for (String result : results) {
-                getCertsFromText(result, certificates,0);
-            }
-            return true;
-        } catch (ParserException e) {
-            return false;
-        }
-    }
 
-    private void parseYaml(Map<Object,Object> doc, List<String> results) {
-        for (Object key : doc.keySet()) {
-            Object value = doc.get(key);
-            if (value instanceof String) {
-                results.add((String)value);
-            }
-            if (value instanceof Map) {
-                parseYaml((Map<Object, Object>) value,results);
-            }
-        }
-    }
-*/
-    private void getCertsFromText(String text, List<RetrievedCert> certificates, int baseOffset) {
+    private void getCertsFromText(String text, List<RetrievedCert> certificates) {
         for (PotentialCert potentialCert : findPotentialCerts(text)) {
             try {
-                certificates.add(new RetrievedCert(editor, potentialCert.getOffset()+baseOffset, certFromBytes(potentialCert.getPotentialCert())));
+                certificates.add(new RetrievedCert(editor, potentialCert.getOffset(), certFromBytes(potentialCert.getPotentialCert())));
             } catch (Exception e) {} // Ignoring it for now due to the brute force nature of cert finding.
         }
     }
@@ -123,7 +86,6 @@ public class CertRetriever {
             if (!seqDerReader.isError()) {
                 potentialCerts.add(new PotentialCert(seqDerReader.getResult(),decoder.getOriginalOffset()));
             }
-        } catch (OutOfMemoryError e) {}
-        catch (Exception e) {}
+        } catch (OutOfMemoryError | Exception e) {}
     }
 }
