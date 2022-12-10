@@ -1,24 +1,40 @@
 package nl.crosscode.x509certbuddy.ui;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.intellij.openapi.fileChooser.FileChooserFactory;
+import com.intellij.openapi.fileChooser.FileSaverDescriptor;
+import com.intellij.openapi.fileChooser.FileSaverDialog;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileWrapper;
+import nl.crosscode.x509certbuddy.models.CertModel;
 import nl.crosscode.x509certbuddy.utils.X509Utils;
 import nl.crosscode.x509certbuddy.wrappers.OpenSslWrapper;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Exporters {
     private final List<X509Certificate> certificateList;
     private X509Certificate selectedCert;
 
-    public Exporters(List<X509Certificate> certificateList) {
+    private final JComponent parent;
+
+    public Exporters(List<X509Certificate> certificateList, JComponent parent) {
         this.certificateList = certificateList;
+        this.parent = parent;
     }
 
     public void setSelectedCertificate(X509Certificate selected) {
@@ -58,20 +74,52 @@ public class Exporters {
     }
 
     public void copyCertChainPEM(ActionEvent actionEvent) {
-        if (selectedCert==null) return;
+        getCertChain().ifPresent(this::CopyToClipboard);
+
+    }
+
+    public void exportCertChainPEMButton(ActionEvent actionEvent) {
+        getCertChain().ifPresent(
+               certChain -> SaveToFile(certChain.getBytes(),selectedCert.getSerialNumber().toString(16)+"_chain.pem")
+        );
+
+    }
+
+    public void copyAll(ActionEvent actionEvent) {
+        CopyToClipboard(exportAll());
+    }
+
+    public void exportAll(ActionEvent actionEvent) {
+        SaveToFile(exportAll().getBytes(),"all.json");
+    }
+
+    private Optional<String> getCertChain() {
+        if (selectedCert==null) return Optional.empty();
         StringBuilder builder = new StringBuilder();
         String pem = OpenSslWrapper.getPem(selectedCert);
-        if (pem==null||pem.isEmpty()) return; // this is to check openssl is working...
+        if (pem==null||pem.isEmpty()) return Optional.empty(); // this is to check openssl is working...
         builder.append(pem);
         X509Certificate currentCert = getParent(selectedCert);
         while (currentCert!=null) {
             builder.append(OpenSslWrapper.getPem(currentCert));
             currentCert = getParent(currentCert);
         }
-        CopyToClipboard(builder.toString());
+        return Optional.of(builder.toString());
     }
 
-    public void exportCertChainPEMButton(ActionEvent actionEvent) {
+    private String exportAll() {
+        var listOfCertModels = certificateList.stream().map(c-> {
+            try {
+                return new CertModel(c);
+            } catch (CertificateEncodingException e) {
+                throw new RuntimeException(e);
+            }
+        }).collect(Collectors.toList());
+        var gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .disableHtmlEscaping()
+                .create();
+        return gson.toJson(listOfCertModels);
     }
 
     private void CopyToClipboard(String data) {
@@ -81,7 +129,15 @@ public class Exporters {
     }
 
     private void SaveToFile(byte[] data, String fileNameHint) {
-
+        FileSaverDescriptor fsd = new FileSaverDescriptor("Save file as","");
+        FileSaverDialog dlg = FileChooserFactory.getInstance().createSaveFileDialog(fsd, parent);
+        VirtualFileWrapper wrapper = dlg.save(fileNameHint);
+        if (wrapper==null) return;
+        VirtualFile vf = wrapper.getVirtualFile(true);
+        if (vf==null)  return;
+        try {
+            vf.setBinaryContent(data);
+        } catch (IOException e) { }
     }
 
 }

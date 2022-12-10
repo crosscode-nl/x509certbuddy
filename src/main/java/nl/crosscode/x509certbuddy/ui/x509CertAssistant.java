@@ -4,7 +4,6 @@ import com.intellij.openapi.diagnostic.Logger;
 import nl.crosscode.x509certbuddy.decoder.CertRetriever;
 import nl.crosscode.x509certbuddy.decoder.RetrievedCert;
 import nl.crosscode.x509certbuddy.wrappers.X509CertWrapper;
-import nl.crosscode.x509certbuddy.utils.X509Utils;
 import nl.crosscode.x509certbuddy.wrappers.HexDumpWrapper;
 import nl.crosscode.x509certbuddy.wrappers.OpenSslWrapper;
 import org.apache.commons.io.FileUtils;
@@ -13,9 +12,6 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.dnd.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -52,6 +48,8 @@ public class x509CertAssistant {
     private JButton exportDERButton;
     private JButton exportCertChainPEMButton;
     private JButton exportPEMButton;
+    private JButton copyAllButton;
+    private JButton exportAllButton;
 
     public x509CertAssistant() {
         log.warn("Constructed x509CertAssistant");
@@ -59,14 +57,16 @@ public class x509CertAssistant {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Certs", true);
         model.setRoot(root);
         model.reload();
-        exporters = new Exporters(x509Certificates);
+        exporters = new Exporters(x509Certificates,rootPanel);
         certTree.addTreeSelectionListener(this::treeSelectionChanged);
         copyPEMButton.addActionListener(exporters::copyPem);
         copyBase64Button.addActionListener(exporters::copyBase64);
         copyCertChainPEMButton.addActionListener(exporters::copyCertChainPEM);
+        copyAllButton.addActionListener(exporters::copyAll);
         exportDERButton.addActionListener(exporters::exportDER);
         exportCertChainPEMButton.addActionListener(exporters::exportCertChainPEMButton);
         exportPEMButton.addActionListener(exporters::exportPEM);
+        exportAllButton.addActionListener(exporters::exportAll);
         removeCertButton.addActionListener(this::removeCert);
         clearButton.addActionListener(this::clear);
         new DropTarget(rootPanel, new FileDropTargetListener(this::filesToProcess));
@@ -122,7 +122,13 @@ public class x509CertAssistant {
     private void itemSelected(boolean value) {
         copyBase64Button.setEnabled(value);
         copyPEMButton.setEnabled(value);
+        copyCertChainPEMButton.setEnabled(value);
+        exportDERButton.setEnabled(value);
+        exportPEMButton.setEnabled(value);
+        exportCertChainPEMButton.setEnabled(value);
         removeCertButton.setEnabled(value);
+        exportAllButton.setEnabled(value);
+        copyAllButton.setEnabled(value);
     }
 
     private void removeCert(ActionEvent e) {
