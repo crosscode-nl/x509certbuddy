@@ -32,8 +32,10 @@ public class x509CertAssistant {
 
     private static final Logger log = Logger.getInstance(x509CertAssistant.class);
     private String pemString;
-    private String base64String;
-    private List<X509Certificate> x509Certificates = new ArrayList<>();
+
+    private Exporters exporters;
+//    private String base64String;
+    private final List<X509Certificate> x509Certificates = new ArrayList<>();
     private X509Certificate selectedCertificate = null;
     private JPanel rootPanel;
     private JTree certTree;
@@ -46,15 +48,25 @@ public class x509CertAssistant {
     private JButton removeCertButton;
     private JButton clearButton;
     private JButton copyBase64Button;
+    private JButton copyCertChainPEMButton;
+    private JButton exportDERButton;
+    private JButton exportCertChainPEMButton;
+    private JButton exportPEMButton;
+
     public x509CertAssistant() {
         log.warn("Constructed x509CertAssistant");
         DefaultTreeModel model = (DefaultTreeModel) certTree.getModel();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Certs", true);
         model.setRoot(root);
         model.reload();
+        exporters = new Exporters(x509Certificates);
         certTree.addTreeSelectionListener(this::treeSelectionChanged);
-        copyPEMButton.addActionListener(this::copyPem);
-        copyBase64Button.addActionListener(this::copyBase64);
+        copyPEMButton.addActionListener(exporters::copyPem);
+        copyBase64Button.addActionListener(exporters::copyBase64);
+        copyCertChainPEMButton.addActionListener(exporters::copyCertChainPEM);
+        exportDERButton.addActionListener(exporters::exportDER);
+        exportCertChainPEMButton.addActionListener(exporters::exportCertChainPEMButton);
+        exportPEMButton.addActionListener(exporters::exportPEM);
         removeCertButton.addActionListener(this::removeCert);
         clearButton.addActionListener(this::clear);
         new DropTarget(rootPanel, new FileDropTargetListener(this::filesToProcess));
@@ -75,12 +87,14 @@ public class x509CertAssistant {
         DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) certTree.getLastSelectedPathComponent();
         if (treeNode == null) {
             selectedCertificate = null;
+            exporters.setSelectedCertificate(null);
             updateFieldsWithCertDetails();
             itemSelected(false);
             return;
         }
         itemSelected(true);
         selectedCertificate = ((X509CertWrapper) treeNode.getUserObject()).getCert();
+        exporters.setSelectedCertificate(selectedCertificate);
         updateFieldsWithCertDetails();
     }
 
@@ -99,7 +113,7 @@ public class x509CertAssistant {
         certDetailsTextPane.setCaretPosition(0);
         pemString = OpenSslWrapper.getPem(selectedCertificate);
         pemTextPane.setText(pemString);
-        base64String = X509Utils.getBase64(selectedCertificate);
+    //    base64String = X509Utils.getBase64(selectedCertificate);
         asn1TextPane.setText(OpenSslWrapper.getAsn1(selectedCertificate));
         hexTextPane.setText(HexDumpWrapper.getHex(selectedCertificate));
         validationTextPane.setText(OpenSslWrapper.getValidation(selectedCertificate, x509Certificates));
@@ -121,19 +135,7 @@ public class x509CertAssistant {
         buildTree();
     }
 
-    private void copyPem(ActionEvent e) {
-        if (pemString == null) return;
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        StringSelection ss = new StringSelection(pemString);
-        clipboard.setContents(ss, ss);
-    }
 
-    private void copyBase64(ActionEvent e) {
-        if (base64String == null) return;
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        StringSelection ss = new StringSelection(base64String);
-        clipboard.setContents(ss, ss);
-    }
 
     public JPanel getContent() {
         log.warn("getContent is called");
@@ -159,7 +161,8 @@ public class x509CertAssistant {
             })) continue;
             certs.add(cert);
         }
-        x509Certificates = certs;
+        x509Certificates.clear();
+        x509Certificates.addAll(certs);
     }
 
     private void buildTree() {
