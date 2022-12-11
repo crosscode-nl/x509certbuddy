@@ -1,4 +1,4 @@
-package nl.crosscode.x509certbuddy;
+package nl.crosscode.x509certbuddy.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -7,11 +7,13 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.Inlay;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import nl.crosscode.x509certbuddy.decoder.CertRetriever;
 import nl.crosscode.x509certbuddy.decoder.RetrievedCert;
 import nl.crosscode.x509certbuddy.ui.CertEditorElementRender;
+import nl.crosscode.x509certbuddy.x509CertAssistantFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.cert.CertificateException;
@@ -36,7 +38,7 @@ public class ReadCertsInFileAction extends AnAction {
             List<RetrievedCert> certs = certRetriever.retrieveCerts(allText);
             ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow("X.509 Cert Buddy");
             if (tw!=null) {
-                x509CertAssistantFactory.getX509CertAssistant().addCerts(certs.stream().map(x->x.getCertificate()).collect(Collectors.toList()));
+                x509CertAssistantFactory.getX509CertAssistant(e.getProject()).addCerts(certs.stream().map(x->x.getCertificate()).collect(Collectors.toList()));
                 tw.show();
             }
             addCertsToEditor(certs);

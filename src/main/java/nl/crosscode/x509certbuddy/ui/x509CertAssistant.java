@@ -1,6 +1,9 @@
 package nl.crosscode.x509certbuddy.ui;
 
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.wm.ToolWindow;
+import nl.crosscode.x509certbuddy.actions.RemoveSelectedCertAction;
 import nl.crosscode.x509certbuddy.decoder.CertRetriever;
 import nl.crosscode.x509certbuddy.decoder.RetrievedCert;
 import nl.crosscode.x509certbuddy.wrappers.X509CertWrapper;
@@ -51,7 +54,12 @@ public class x509CertAssistant {
     private JButton copyAllButton;
     private JButton exportAllButton;
 
-    public x509CertAssistant() {
+    public x509CertAssistant(ToolWindow tw) {
+        //DefaultActionGroup group = new DefaultActionGroup();
+        //group.add(new RemoveSelectedCertAction());
+        tw.setTitleActions(List.of(new RemoveSelectedCertAction()));
+
+
         log.warn("Constructed x509CertAssistant");
         DefaultTreeModel model = (DefaultTreeModel) certTree.getModel();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Certs", true);
@@ -131,7 +139,7 @@ public class x509CertAssistant {
         copyAllButton.setEnabled(value);
     }
 
-    private void removeCert(ActionEvent e) {
+    public void removeCert(ActionEvent e) {
         x509Certificates.remove(selectedCertificate);
         buildTree();
     }
