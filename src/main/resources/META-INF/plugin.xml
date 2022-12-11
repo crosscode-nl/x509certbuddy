@@ -60,10 +60,5 @@
             <add-to-group group-id="EditorPopupMenu" anchor="last" />
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl meta 5"/>
         </action>
-        <action class="nl.crosscode.x509certbuddy.actions.RemoveSelectedCertAction" text="Remove Selected Cert"
-                description="Remove selected certificate in the x.509 Cert Buddy Toolwindow"
-                icon="AllIcons.General.Remove">
-            <add-to-group group-id="ActiveToolwindowGroup" anchor="first"/>
-        </action>
     </actions>
 </idea-plugin>

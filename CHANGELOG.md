@@ -8,6 +8,7 @@
 * Copy and export PEM cert chain
 * Export DER
 * Copy and export all certificates in a json file
+* Support for multiple projects
 
 # 0.2 - 2022-12-07
 

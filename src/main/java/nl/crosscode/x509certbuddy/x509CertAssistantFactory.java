@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class x509CertAssistantFactory implements ToolWindowFactory {
 
-    private static HashMap<Project,nl.crosscode.x509certbuddy.ui.x509CertAssistant> instances = new HashMap<>();
+    private static final HashMap<Project,nl.crosscode.x509certbuddy.ui.x509CertAssistant> instances = new HashMap<>();
 
     public static synchronized x509CertAssistant getX509CertAssistant(Project project) {
         return instances.get(project);

@@ -38,7 +38,7 @@ public class ReadCertsInFileAction extends AnAction {
             List<RetrievedCert> certs = certRetriever.retrieveCerts(allText);
             ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow("X.509 Cert Buddy");
             if (tw!=null) {
-                x509CertAssistantFactory.getX509CertAssistant(e.getProject()).addCerts(certs.stream().map(x->x.getCertificate()).collect(Collectors.toList()));
+                x509CertAssistantFactory.getX509CertAssistant(e.getProject()).addCerts(certs.stream().map(RetrievedCert::getCertificate).collect(Collectors.toList()));
                 tw.show();
             }
             addCertsToEditor(certs);

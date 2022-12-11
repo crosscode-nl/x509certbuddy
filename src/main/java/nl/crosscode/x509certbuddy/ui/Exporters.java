@@ -1,7 +1,6 @@
 package nl.crosscode.x509certbuddy.ui;
 
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.intellij.openapi.fileChooser.FileChooserFactory;
 import com.intellij.openapi.fileChooser.FileSaverDescriptor;
@@ -22,7 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -45,25 +43,25 @@ public class Exporters {
         if (selectedCert==null) return;
         String pem = OpenSslWrapper.getPem(selectedCert);
         if (pem==null||pem.isEmpty()) return;
-        CopyToClipboard(pem);
+        copyToClipboard(pem);
     }
 
     public void exportPEM(ActionEvent actionEvent) {
         if (selectedCert==null) return;
         String pem = OpenSslWrapper.getPem(selectedCert);
         if (pem==null||pem.isEmpty()) return;
-        SaveToFile(pem.getBytes(StandardCharsets.UTF_8),selectedCert.getSerialNumber().toString(16)+".pem");
+        saveToFile(pem.getBytes(StandardCharsets.UTF_8),selectedCert.getSerialNumber().toString(16)+".pem");
     }
 
     public void copyBase64(ActionEvent e) {
         if (selectedCert==null) return;
-        CopyToClipboard(X509Utils.getBase64(selectedCert));
+        copyToClipboard(X509Utils.getBase64(selectedCert));
     }
 
     public void exportDER(ActionEvent actionEvent) {
         if (selectedCert==null) return;
         try {
-            SaveToFile(selectedCert.getEncoded(),selectedCert.getSerialNumber().toString(16)+".der");
+            saveToFile(selectedCert.getEncoded(),selectedCert.getSerialNumber().toString(16)+".der");
         } catch (CertificateEncodingException e) {
         }
     }
@@ -74,23 +72,23 @@ public class Exporters {
     }
 
     public void copyCertChainPEM(ActionEvent actionEvent) {
-        getCertChain().ifPresent(this::CopyToClipboard);
+        getCertChain().ifPresent(this::copyToClipboard);
 
     }
 
-    public void exportCertChainPEMButton(ActionEvent actionEvent) {
+    public void exportCertChainPEM(ActionEvent actionEvent) {
         getCertChain().ifPresent(
-               certChain -> SaveToFile(certChain.getBytes(),selectedCert.getSerialNumber().toString(16)+"_chain.pem")
+               certChain -> saveToFile(certChain.getBytes(),selectedCert.getSerialNumber().toString(16)+"_chain.pem")
         );
 
     }
 
     public void copyAll(ActionEvent actionEvent) {
-        CopyToClipboard(exportAll());
+        copyToClipboard(exportAll());
     }
 
     public void exportAll(ActionEvent actionEvent) {
-        SaveToFile(exportAll().getBytes(),"all.json");
+        saveToFile(exportAll().getBytes(),"all.json");
     }
 
     private Optional<String> getCertChain() {
@@ -122,13 +120,13 @@ public class Exporters {
         return gson.toJson(listOfCertModels);
     }
 
-    private void CopyToClipboard(String data) {
+    private void copyToClipboard(String data) {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection ss = new StringSelection(data);
         clipboard.setContents(ss, ss);
     }
 
-    private void SaveToFile(byte[] data, String fileNameHint) {
+    private void saveToFile(byte[] data, String fileNameHint) {
         FileSaverDescriptor fsd = new FileSaverDescriptor("Save file as","");
         FileSaverDialog dlg = FileChooserFactory.getInstance().createSaveFileDialog(fsd, parent);
         VirtualFileWrapper wrapper = dlg.save(fileNameHint);

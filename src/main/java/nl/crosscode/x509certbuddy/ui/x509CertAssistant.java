@@ -1,14 +1,22 @@
 package nl.crosscode.x509certbuddy.ui;
 
+import com.intellij.icons.AllIcons;
+import com.intellij.ide.actions.CloseOtherProjectsAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.ui.PopupHandler;
+import com.thaiopensource.xml.dtd.om.Def;
+import nl.crosscode.x509certbuddy.actions.CopyPEMAction;
+import nl.crosscode.x509certbuddy.actions.ExportPEMAction;
+import nl.crosscode.x509certbuddy.actions.RemoveAllCertsAction;
 import nl.crosscode.x509certbuddy.actions.RemoveSelectedCertAction;
 import nl.crosscode.x509certbuddy.decoder.CertRetriever;
 import nl.crosscode.x509certbuddy.decoder.RetrievedCert;
 import nl.crosscode.x509certbuddy.wrappers.X509CertWrapper;
 import nl.crosscode.x509certbuddy.wrappers.HexDumpWrapper;
 import nl.crosscode.x509certbuddy.wrappers.OpenSslWrapper;
+import nl.crosscode.x509certbuddy.x509CertAssistantFactory;
 import org.apache.commons.io.FileUtils;
 
 import javax.swing.*;
@@ -40,43 +48,21 @@ public class x509CertAssistant {
     private JTree certTree;
     private JTextPane certDetailsTextPane;
     private JTextPane pemTextPane;
-    private JButton copyPEMButton;
     private JTextPane asn1TextPane;
     private JTextPane hexTextPane;
     private JTextPane validationTextPane;
-    private JButton removeCertButton;
-    private JButton clearButton;
-    private JButton copyBase64Button;
-    private JButton copyCertChainPEMButton;
-    private JButton exportDERButton;
-    private JButton exportCertChainPEMButton;
-    private JButton exportPEMButton;
-    private JButton copyAllButton;
-    private JButton exportAllButton;
 
     public x509CertAssistant(ToolWindow tw) {
-        //DefaultActionGroup group = new DefaultActionGroup();
-        //group.add(new RemoveSelectedCertAction());
-        tw.setTitleActions(List.of(new RemoveSelectedCertAction()));
-
-
+       // tw.setTitleActions(List.of(group));
         log.warn("Constructed x509CertAssistant");
+        exporters = new Exporters(x509Certificates,rootPanel);
+        PopupHandler.installPopupMenu(certTree,CBActionManager.buildContextMenu(exporters), "X509CertBuddy.CertTree.Actions");
+
         DefaultTreeModel model = (DefaultTreeModel) certTree.getModel();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Certs", true);
         model.setRoot(root);
         model.reload();
-        exporters = new Exporters(x509Certificates,rootPanel);
         certTree.addTreeSelectionListener(this::treeSelectionChanged);
-        copyPEMButton.addActionListener(exporters::copyPem);
-        copyBase64Button.addActionListener(exporters::copyBase64);
-        copyCertChainPEMButton.addActionListener(exporters::copyCertChainPEM);
-        copyAllButton.addActionListener(exporters::copyAll);
-        exportDERButton.addActionListener(exporters::exportDER);
-        exportCertChainPEMButton.addActionListener(exporters::exportCertChainPEMButton);
-        exportPEMButton.addActionListener(exporters::exportPEM);
-        exportAllButton.addActionListener(exporters::exportAll);
-        removeCertButton.addActionListener(this::removeCert);
-        clearButton.addActionListener(this::clear);
         new DropTarget(rootPanel, new FileDropTargetListener(this::filesToProcess));
     }
 
@@ -121,22 +107,12 @@ public class x509CertAssistant {
         certDetailsTextPane.setCaretPosition(0);
         pemString = OpenSslWrapper.getPem(selectedCertificate);
         pemTextPane.setText(pemString);
-    //    base64String = X509Utils.getBase64(selectedCertificate);
         asn1TextPane.setText(OpenSslWrapper.getAsn1(selectedCertificate));
         hexTextPane.setText(HexDumpWrapper.getHex(selectedCertificate));
         validationTextPane.setText(OpenSslWrapper.getValidation(selectedCertificate, x509Certificates));
     }
 
     private void itemSelected(boolean value) {
-        copyBase64Button.setEnabled(value);
-        copyPEMButton.setEnabled(value);
-        copyCertChainPEMButton.setEnabled(value);
-        exportDERButton.setEnabled(value);
-        exportPEMButton.setEnabled(value);
-        exportCertChainPEMButton.setEnabled(value);
-        removeCertButton.setEnabled(value);
-        exportAllButton.setEnabled(value);
-        copyAllButton.setEnabled(value);
     }
 
     public void removeCert(ActionEvent e) {
@@ -144,7 +120,7 @@ public class x509CertAssistant {
         buildTree();
     }
 
-    private void clear(ActionEvent e) {
+    public void removeAllCerts(ActionEvent e) {
         x509Certificates.clear();
         buildTree();
     }

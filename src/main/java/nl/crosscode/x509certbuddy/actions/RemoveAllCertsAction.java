@@ -6,16 +6,15 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import nl.crosscode.x509certbuddy.x509CertAssistantFactory;
 import org.jetbrains.annotations.NotNull;
 
-public class RemoveSelectedCertAction extends AnAction {
+public class RemoveAllCertsAction extends AnAction {
 
-    public RemoveSelectedCertAction() {
-        this.getTemplatePresentation().setIcon(AllIcons.Actions.GC);
-        this.getTemplatePresentation().setText("Remove Selected Certificate");
+    public RemoveAllCertsAction() {
+        this.getTemplatePresentation().setIcon(AllIcons.Actions.Cancel);
+        this.getTemplatePresentation().setText("Remove All Certificates");
     }
+
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-
-        x509CertAssistantFactory.getX509CertAssistant(e.getProject()).removeCert(null);
+        x509CertAssistantFactory.getX509CertAssistant(e.getProject()).removeAllCerts(null);
     }
-
 }
