@@ -83,10 +83,8 @@ public class x509CertAssistant {
             selectedCertificate = null;
             exporters.setSelectedCertificate(null);
             updateFieldsWithCertDetails();
-            itemSelected(false);
             return;
         }
-        itemSelected(true);
         selectedCertificate = ((X509CertWrapper) treeNode.getUserObject()).getCert();
         exporters.setSelectedCertificate(selectedCertificate);
         updateFieldsWithCertDetails();
@@ -112,8 +110,6 @@ public class x509CertAssistant {
         validationTextPane.setText(OpenSslWrapper.getValidation(selectedCertificate, x509Certificates));
     }
 
-    private void itemSelected(boolean value) {
-    }
 
     public void removeCert(ActionEvent e) {
         x509Certificates.remove(selectedCertificate);
@@ -194,5 +190,13 @@ public class x509CertAssistant {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+    }
+
+    public boolean hasCertSelected() {
+        return selectedCertificate!=null;
+    }
+
+    public boolean hasCerts() {
+        return certTree.getModel().getChildCount(certTree.getModel().getRoot())>0;
     }
 }

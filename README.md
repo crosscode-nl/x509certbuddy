@@ -23,6 +23,4 @@
 - v1.1.0 
   - Support for reading X.509 certs from PKCS #7 (.p7b)
   - Support for reading X.509 PKCS #12 (.p12/.pfx)
-- v1.2.0
-  - Workspace support (store X.509 certs in tool)
-- v2.0.0
+  - Support for writing X.509 certs to PKCS #7

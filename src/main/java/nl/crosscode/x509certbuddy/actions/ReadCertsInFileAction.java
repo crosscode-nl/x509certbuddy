@@ -13,6 +13,7 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import nl.crosscode.x509certbuddy.decoder.CertRetriever;
 import nl.crosscode.x509certbuddy.decoder.RetrievedCert;
 import nl.crosscode.x509certbuddy.ui.CertEditorElementRender;
+import nl.crosscode.x509certbuddy.ui.x509CertAssistant;
 import nl.crosscode.x509certbuddy.x509CertAssistantFactory;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,5 +56,11 @@ public class ReadCertsInFileAction extends AnAction {
             inlays.add(editor.getInlayModel().addBlockElement(retrievedCert.getOffset(),false,true,0,new CertEditorElementRender(retrievedCert.getCertificate())));
         }
 
+    }
+
+    @Override
+    public void update(@NotNull AnActionEvent e) {
+        e.getPresentation().setEnabled(e.getProject() != null && FileEditorManager.getInstance(e.getProject()).getSelectedEditor() != null);
+        super.update(e);
     }
 }
