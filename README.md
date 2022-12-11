@@ -8,11 +8,15 @@
   - Code refactoring
   - Export cert chain
   - Export DER
+  - Export ALL
 - v0.4.0
+  - Set actions to enabled/disabled 
   - Update documentation
   - Add tests
   - Update license, etc, to allow open sourcing the project
   - Set-up sponsoring
+- v0.5.0 
+  - Add API (Extensions or Listener... TBD)
 - v1.0.0 
   - Initial non alpha release
   - Start sponsoring

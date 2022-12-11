@@ -9,6 +9,7 @@
 * Export DER
 * Copy and export all certificates in a json file
 * Support for multiple projects
+* Moved export tab and buttons, and remove cert and clear buttons to context menu on the tree view.
 
 # 0.2 - 2022-12-07
 
