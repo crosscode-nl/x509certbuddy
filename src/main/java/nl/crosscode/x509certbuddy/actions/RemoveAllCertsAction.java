@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class RemoveAllCertsAction extends AnAction {
 
     public RemoveAllCertsAction() {
-        this.getTemplatePresentation().setIcon(AllIcons.Actions.Cancel);
+        this.getTemplatePresentation().setIcon(AllIcons.Actions.GC);
         this.getTemplatePresentation().setText("Remove All Certificates");
     }
 

@@ -53,9 +53,9 @@ public class x509CertAssistant {
     private JTextPane validationTextPane;
 
     public x509CertAssistant(ToolWindow tw) {
-       // tw.setTitleActions(List.of(group));
         log.warn("Constructed x509CertAssistant");
         exporters = new Exporters(x509Certificates,rootPanel);
+        tw.setTitleActions(List.of(CBActionManager.buildContextMenu(exporters)));
         PopupHandler.installPopupMenu(certTree,CBActionManager.buildContextMenu(exporters), "X509CertBuddy.CertTree.Actions");
 
         DefaultTreeModel model = (DefaultTreeModel) certTree.getModel();
