@@ -16,12 +16,12 @@ public class RemoveSelectedCertAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
 
-        x509CertAssistantFactory.getX509CertAssistant(e.getProject()).removeCert(null);
+        x509CertAssistantFactory.getInstance(e.getProject()).removeCert(null);
     }
 
     @Override
     public void update(@NotNull AnActionEvent e) {
-        x509CertAssistant assistant = x509CertAssistantFactory.getX509CertAssistant(e.getProject());
+        x509CertAssistant assistant = x509CertAssistantFactory.getInstance(e.getProject());
         e.getPresentation().setEnabled(assistant!=null?assistant.hasCertSelected():false);
         super.update(e);
     }

@@ -15,11 +15,11 @@ public class x509CertAssistantFactory implements ToolWindowFactory {
 
     private static final HashMap<Project,nl.crosscode.x509certbuddy.ui.x509CertAssistant> instances = new HashMap<>();
 
-    public static synchronized x509CertAssistant getX509CertAssistant(Project project) {
+    public static synchronized x509CertAssistant getInstance(Project project) {
         return instances.get(project);
     }
 
-    private static synchronized x509CertAssistant getX509CertAssistant(Project project, Factory<nl.crosscode.x509certbuddy.ui.x509CertAssistant> factory) {
+    private static synchronized x509CertAssistant getInstance(Project project, Factory<nl.crosscode.x509certbuddy.ui.x509CertAssistant> factory) {
         x509CertAssistant value = instances.get(project);
         if (value==null) {
             value = factory.create();
@@ -30,7 +30,7 @@ public class x509CertAssistantFactory implements ToolWindowFactory {
 
     @Override
     public synchronized void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        nl.crosscode.x509certbuddy.ui.x509CertAssistant x509CertAssistant = getX509CertAssistant(project,()->new x509CertAssistant(toolWindow));
+        nl.crosscode.x509certbuddy.ui.x509CertAssistant x509CertAssistant = getInstance(project,()->new x509CertAssistant(toolWindow));
         Content content = toolWindow.getContentManager().getFactory().createContent(x509CertAssistant.getContent(),"",false);
         toolWindow.getContentManager().addContent(content);
     }

@@ -9,8 +9,8 @@
   - Export cert chain
   - Export DER
   - Export ALL
+  - Set actions to enabled/disabled
 - v0.4.0
-  - Set actions to enabled/disabled 
   - Update documentation
   - Add tests
   - Update license, etc, to allow open sourcing the project

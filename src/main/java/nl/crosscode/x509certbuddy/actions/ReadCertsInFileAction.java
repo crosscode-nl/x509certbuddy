@@ -7,13 +7,11 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.Inlay;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import nl.crosscode.x509certbuddy.decoder.CertRetriever;
 import nl.crosscode.x509certbuddy.decoder.RetrievedCert;
 import nl.crosscode.x509certbuddy.ui.CertEditorElementRender;
-import nl.crosscode.x509certbuddy.ui.x509CertAssistant;
 import nl.crosscode.x509certbuddy.x509CertAssistantFactory;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,7 +37,7 @@ public class ReadCertsInFileAction extends AnAction {
             List<RetrievedCert> certs = certRetriever.retrieveCerts(allText);
             ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow("X.509 Cert Buddy");
             if (tw!=null) {
-                x509CertAssistantFactory.getX509CertAssistant(e.getProject()).addCerts(certs.stream().map(RetrievedCert::getCertificate).collect(Collectors.toList()));
+                x509CertAssistantFactory.getInstance(e.getProject()).addCerts(certs.stream().map(RetrievedCert::getCertificate).collect(Collectors.toList()));
                 tw.show();
             }
             addCertsToEditor(certs);
