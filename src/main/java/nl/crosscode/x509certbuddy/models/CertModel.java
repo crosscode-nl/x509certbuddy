@@ -1,7 +1,6 @@
 package nl.crosscode.x509certbuddy.models;
 
-import com.intellij.util.Base64;
-import nl.crosscode.x509certbuddy.wrappers.OpenSslWrapper;
+import java.util.Base64;
 
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -15,7 +14,7 @@ public class CertModel {
     private final Date notBefore;
     private final Date notAfter;
     public CertModel(X509Certificate cert) throws CertificateEncodingException {
-        der = Base64.encode(cert.getEncoded());
+        der = Base64.getEncoder().encodeToString(cert.getEncoded());
         serial = cert.getSerialNumber().toString(16);
         subject = cert.getSubjectDN().getName();
         issuer = cert.getIssuerDN().getName();
