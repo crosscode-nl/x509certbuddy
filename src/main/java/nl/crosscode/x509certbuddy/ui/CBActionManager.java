@@ -6,13 +6,9 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import nl.crosscode.x509certbuddy.actions.*;
 
 public class CBActionManager {
-    private static ExportPEMAction exportPEMAction;
 
 
     static synchronized ActionGroup buildContextMenu(Exporters exporters) {
-        if (exportPEMAction==null) {
-            exportPEMAction = new ExportPEMAction(exporters);
-        }
 
         DefaultActionGroup exportActions = new DefaultActionGroup();
         exportActions.setPopup(true);

@@ -1,4 +1,9 @@
-# 0.3
+# 0.4
+
+* Fixed assertion while writing data
+* Fixed use of deprecated Base64 
+
+# 0.3 - 2022-12-11
 
 * UI improvements, now more in line with IntelliJ
     * Most buttons are removed and replaced with actions

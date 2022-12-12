@@ -2,19 +2,13 @@
 
 ## Roadmap
 
-- v0.3.0 
-  - UI rework
-  - Accept DER certificate
-  - Code refactoring
-  - Export cert chain
-  - Export DER
-  - Export ALL
-  - Set actions to enabled/disabled
 - v0.4.0
   - Update documentation
   - Add tests
   - Update license, etc, to allow open sourcing the project
   - Set-up sponsoring
+  - Add features, file types, etc...
+  - fix bug when exporting
 - v0.5.0 
   - Add API (Extensions or Listener... TBD)
 - v1.0.0 

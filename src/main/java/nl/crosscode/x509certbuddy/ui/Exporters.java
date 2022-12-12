@@ -2,6 +2,8 @@ package nl.crosscode.x509certbuddy.ui;
 
 
 import com.google.gson.GsonBuilder;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileChooser.FileChooserFactory;
 import com.intellij.openapi.fileChooser.FileSaverDescriptor;
 import com.intellij.openapi.fileChooser.FileSaverDialog;
@@ -133,9 +135,24 @@ public class Exporters {
         if (wrapper==null) return;
         VirtualFile vf = wrapper.getVirtualFile(true);
         if (vf==null)  return;
-        try {
-            vf.setBinaryContent(data);
-        } catch (IOException e) { }
+        Application application = ApplicationManager.getApplication();
+        if(application.isDispatchThread()) {
+
+            application.runWriteAction(()->{
+                try {
+                    vf.setBinaryContent(data);
+                } catch (IOException e) { }
+            });
+
+        } else {
+            application.invokeLater(()-> application.runWriteAction(()->{
+                try {
+                    vf.setBinaryContent(data);
+                } catch (IOException e) { }
+            }));
+        }
+
+
     }
 
 }
