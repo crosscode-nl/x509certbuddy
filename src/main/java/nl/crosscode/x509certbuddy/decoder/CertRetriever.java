@@ -25,8 +25,7 @@ public class CertRetriever {
         if (data==null||data.length<64) return List.of();
         if (data[0]==0x30) {
             try (ByteArrayInputStream bais = new ByteArrayInputStream(data)) {
-                X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(bais);
-                return List.of(new RetrievedCert(null,0,cert));
+                return CertificateFactory.getInstance("X.509").generateCertificates(bais).stream().map(c->new RetrievedCert(null,0,(X509Certificate)c)).collect(Collectors.toList());
             } catch (IOException | CertificateException e) {
             }
         }
@@ -43,14 +42,16 @@ public class CertRetriever {
     private void getCertsFromText(String text, List<RetrievedCert> certificates) {
         for (PotentialCert potentialCert : findPotentialCerts(text)) {
             try {
-                certificates.add(new RetrievedCert(editor, potentialCert.getOffset(), certFromBytes(potentialCert.getPotentialCert())));
+                for (X509Certificate cert : certFromBytes(potentialCert.getPotentialCert())) {
+                    certificates.add(new RetrievedCert(editor, potentialCert.getOffset(), cert));
+                }
             } catch (Exception e) {} // Ignoring it for now due to the brute force nature of cert finding.
         }
     }
 
-    private X509Certificate certFromBytes(byte[] bytes) throws CertificateException {
+    private List<X509Certificate> certFromBytes(byte[] bytes) throws CertificateException {
         InputStream in = new ByteArrayInputStream(bytes);
-        return (X509Certificate)certFactory.generateCertificate(in);
+        return certFactory.generateCertificates(in).stream().map(c->(X509Certificate)c).collect(Collectors.toList());
     }
 
     private List<PotentialCert> findPotentialCerts(String text) {
