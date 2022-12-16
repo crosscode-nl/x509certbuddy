@@ -55,6 +55,7 @@ public class CertRetriever {
     }
 
     private List<PotentialCert> findPotentialCerts(String text) {
+        List<Decoder> blockingDecoders = new ArrayList<>();
         List<PotentialCert> potentialCerts = new ArrayList<>();
         List<Decoder> decoders = new ArrayList<Decoder>();
         int offset = -1;
@@ -65,7 +66,10 @@ public class CertRetriever {
             }
             for (Decoder decoder : decoders) {
                 if (decoder.add(c)) { // decoder is certainly done
-                    decodeToPotentialCerts(potentialCerts, decoder);
+                    if (blockingDecoders.stream().noneMatch(blockingDecoder -> blockingDecoder.isOffsetInsideRange(decoder.getOriginalOffset()))) { // decoder is not working inside another decoders range which already succeeded.
+                        blockingDecoders.add(decoder);
+                        decodeToPotentialCerts(potentialCerts, decoder);
+                    }
                 }
             }
             decoders = decoders.stream().filter(decoder -> !decoder.isDone()).collect(Collectors.toList());

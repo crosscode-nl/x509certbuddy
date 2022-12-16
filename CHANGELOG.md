@@ -2,6 +2,7 @@
 
 * Fixed assertion while writing data
 * Fixed use of deprecated Base64 
+* Support for reading p7b/p7c
 
 # 0.3 - 2022-12-11
 

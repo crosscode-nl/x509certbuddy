@@ -8,11 +8,14 @@ public class Decoder {
     private final String base64Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     private String data = "";
     private Boolean readPadding = false;
+
+    private int count = 0;
+
     private Boolean done = false;
 
     private Boolean escapeMode = false;
 
-    private int originalOffset;
+    private final int originalOffset;
 
     public Decoder(int originalOffset) {
         this.originalOffset = originalOffset;
@@ -21,6 +24,7 @@ public class Decoder {
     public Boolean add(char c) {
         // TODO: Alternative alphabets
         if (done) return true;
+        count++;
         if (escapeMode) {
             String escape = "\\"+c;
             String result = StringEscapeUtils.unescapeJava(escape);
@@ -32,13 +36,17 @@ public class Decoder {
             escapeMode = true;
             return false;
         }
-        if (c==' '||c=='\n'||c=='\r'||c=='\t') return false;
+        if (c==' '||c=='\n'||c=='\r'||c=='\t') {
+            return false;
+        }
 
         if (base64Alphabet.indexOf(c)==-1){
             done= true;
+            count--;
             return true;
         };
         if (readPadding && c!='=') {
+            count--;
             done = true;
             return true;
         }
@@ -57,5 +65,9 @@ public class Decoder {
 
     public int getOriginalOffset() {
         return originalOffset;
+    }
+
+    public boolean isOffsetInsideRange(int offset) {
+       return offset>=originalOffset && offset<originalOffset+count;
     }
 }

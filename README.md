@@ -15,6 +15,5 @@
   - Initial non alpha release
   - Start sponsoring
 - v1.1.0 
-  - Support for reading X.509 certs from PKCS #7 (.p7b)
   - Support for reading X.509 PKCS #12 (.p12/.pfx)
   - Support for writing X.509 certs to PKCS #7
