@@ -3,6 +3,7 @@
 * Fixed assertion while writing data
 * Fixed use of deprecated Base64 
 * Support for reading p7b/p7c
+* Update editor when editor is opened or something it typed
 
 # 0.3 - 2022-12-11
 

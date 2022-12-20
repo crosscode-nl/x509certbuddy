@@ -1,9 +1,7 @@
 package nl.crosscode.x509certbuddy.utils;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.Inlay;
-import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -11,18 +9,17 @@ import nl.crosscode.x509certbuddy.decoder.CertRetriever;
 import nl.crosscode.x509certbuddy.decoder.RetrievedCert;
 import nl.crosscode.x509certbuddy.ui.CertEditorElementRender;
 import nl.crosscode.x509certbuddy.x509CertAssistantFactory;
-import org.jetbrains.annotations.NotNull;
 
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
+import java.security.cert.X509Certificate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EditorUtils {
 
     private static Dictionary<Editor,List<Inlay>> inlays = new Hashtable<>();
+    private static Dictionary<Editor,List<X509Certificate>> certs = new Hashtable<>();
     public void readCertsFromEditor(Editor editor) {
         if (editor==null) return;
         Project project = editor.getProject();
@@ -42,6 +39,7 @@ public class EditorUtils {
     }
 
     public synchronized void removeEditor(Editor editor) {
+        certs.remove(editor);
         List<Inlay> inlayList = inlays.get(editor);
         if (inlayList!=null) {
             inlayList.stream().forEach(x->x.dispose());
@@ -50,11 +48,33 @@ public class EditorUtils {
     }
 
     private synchronized void addCertsToEditor(List<RetrievedCert> retrievedCerts, Editor editor) {
+        List<X509Certificate> certsOfEditor = certs.get(editor);
+        boolean certsUpdate = true;
+        if (certsOfEditor!=null&&certsOfEditor.size()==retrievedCerts.size()) {
+            certsUpdate = false;
+            for (RetrievedCert cert : retrievedCerts) {
+                if (certsOfEditor.stream().noneMatch(x-> {
+                    try {
+                        return Arrays.equals(x.getEncoded(),cert.getCertificate().getEncoded());
+                    } catch (CertificateEncodingException e) {
+                        throw new RuntimeException(e);
+                    }
+                })) {
+                    certsUpdate = true;
+                    break;
+                }
+            }
+        }
+        if (!certsUpdate) return;
         removeEditor(editor);
         List<Inlay> inlayList = new ArrayList<>();
         inlays.put(editor,inlayList);
+        certsOfEditor = new ArrayList<>();
+        certs.put(editor,certsOfEditor);
         for (RetrievedCert retrievedCert : retrievedCerts) {
+            certsOfEditor.add(retrievedCert.getCertificate());
             inlayList.add(editor.getInlayModel().addBlockElement(retrievedCert.getOffset(),false,true,0,new CertEditorElementRender(retrievedCert.getCertificate())));
         }
+        editor.getComponent().repaint();
     }
 }

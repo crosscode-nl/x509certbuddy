@@ -129,7 +129,21 @@ public class x509CertAssistant {
     }
 
     public void addCerts(List<X509Certificate> certs) {
-        log.warn("Adding certs");
+        boolean newCerts = false;
+        for (X509Certificate cert : certs) {
+            if (x509Certificates.stream().noneMatch(x-> {
+                try {
+                    return Arrays.equals(x.getEncoded(),cert.getEncoded());
+                } catch (CertificateEncodingException e) {
+                    throw new RuntimeException(e);
+                }
+            })) {
+                newCerts = true;
+                break;
+            }
+        }
+
+        if (!newCerts) return;
         x509Certificates.addAll(certs);
         removeDuplicateCerts();
         buildTree();
