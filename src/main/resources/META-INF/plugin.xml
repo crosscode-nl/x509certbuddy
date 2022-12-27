@@ -22,17 +22,11 @@
     <change-notes>
         <![CDATA[
         <ul>
-          <li>Improved user interface, now more closely aligned with IntelliJ's design</li>
-          <li>Most buttons have been removed and replaced with actions, which can be found in the context menu of the tree view or the ToolWindow menu/title bar</li>
-          <li>Updated or added icons for better clarity and consistency</li>
-          <li>Added support for dropping DER-encoded X.509 certificates</li>
-          <li>Made the detail TextPane read-only to prevent accidental changes</li>
-          <li>Moved the "Read Cert" action to the editor context menu for easier access</li>
-          <li>Added the ability to export PEM certificates</li>
-          <li>Added the ability to copy and export PEM certificate chains</li>
-          <li>Added the ability to export certificates as DER-encoded files</li>
-          <li>Added the ability to copy and export all certificates to a JSON file</li>
-          <li>Added support for managing multiple projects</li>
+            <li>Refactored code might potentially fix some issues people may have.</li>
+            <li>Fixed assertion while writing data.</li>
+            <li>Fixed using deprecated API.<li>
+            <li>Support for reading p7b/p7c.</li>
+            <li>Improved brute force decoder.</li>
         </ul>
         ]]>
     </change-notes>

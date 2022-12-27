@@ -8,7 +8,6 @@ import com.intellij.openapi.editor.event.DocumentListener;
 import com.intellij.openapi.editor.event.EditorFactoryEvent;
 import com.intellij.openapi.editor.event.EditorFactoryListener;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.Factory;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
@@ -21,6 +20,8 @@ import java.util.HashMap;
 
 
 public class x509CertAssistantFactory implements ToolWindowFactory, EditorFactoryListener, Disposable, DocumentListener {
+
+    private boolean autoDetectCerts = false;
 
     private static final HashMap<Project,nl.crosscode.x509certbuddy.ui.x509CertAssistant> instances = new HashMap<>();
 
@@ -43,6 +44,7 @@ public class x509CertAssistantFactory implements ToolWindowFactory, EditorFactor
 
     @Override
     public void editorCreated(@NotNull EditorFactoryEvent event) {
+        if (!autoDetectCerts) return;
         EditorUtilsFactory.getInstance().readCertsFromEditor(event.getEditor());
         event.getEditor().getDocument().addDocumentListener(this);
         EditorFactoryListener.super.editorCreated(event);
@@ -58,6 +60,7 @@ public class x509CertAssistantFactory implements ToolWindowFactory, EditorFactor
 
     @Override
     public void documentChanged(@NotNull DocumentEvent event) {
+        if (!autoDetectCerts) return;
         // TODO: Make this lighter somehow
         for (Editor editor : EditorFactory.getInstance().getEditors(event.getDocument())) {
             EditorUtilsFactory.getInstance().readCertsFromEditor(editor);
@@ -70,6 +73,7 @@ public class x509CertAssistantFactory implements ToolWindowFactory, EditorFactor
         nl.crosscode.x509certbuddy.ui.x509CertAssistant x509CertAssistant = getInstance(project,()->new x509CertAssistant(toolWindow));
         Content content = toolWindow.getContentManager().getFactory().createContent(x509CertAssistant.getContent(),"",false);
         toolWindow.getContentManager().addContent(content);
+        if (!autoDetectCerts) return;
         for (Editor editor : EditorFactory.getInstance().getAllEditors()) {
             EditorUtilsFactory.getInstance().readCertsFromEditor(editor);
         }

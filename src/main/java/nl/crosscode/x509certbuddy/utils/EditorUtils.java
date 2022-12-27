@@ -30,8 +30,8 @@ public class EditorUtils {
             if (project!=null) {
                 ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow("X.509 Cert Buddy");
                 if (tw != null) {
-                    x509CertAssistantFactory.getInstance(project).addCerts(certs.stream().map(RetrievedCert::getCertificate).collect(Collectors.toList()));
                     tw.show();
+                    x509CertAssistantFactory.getInstance(project).addCerts(certs.stream().map(RetrievedCert::getCertificate).collect(Collectors.toList()));
                 }
             }
             addCertsToEditor(certs, editor);
