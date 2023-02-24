@@ -22,11 +22,8 @@
     <change-notes>
         <![CDATA[
         <ul>
-            <li>Refactored code might potentially fix some issues people may have.</li>
-            <li>Fixed assertion while writing data.</li>
-            <li>Fixed using deprecated API.<li>
-            <li>Support for reading p7b/p7c.</li>
-            <li>Improved brute force decoder.</li>
+            <li>Removed log messages used during initial development.</li>
+            <li>Fix removing listeners when no listeners are attached.</li>
         </ul>
         ]]>
     </change-notes>
