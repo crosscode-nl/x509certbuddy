@@ -1,4 +1,9 @@
-# 0.4
+# 0.5 - 2022-02-24
+
+* Removed log messages used during initial development
+* Fix removing listeners when no listeners are attached
+
+# 0.4 - 2022-12-21
 
 * Fixed assertion while writing data
 * Fixed use of deprecated Base64 

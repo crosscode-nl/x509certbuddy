@@ -21,7 +21,7 @@ public class ReadCertsInFileAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
 
-        log.warn("Read certs in file action performed.");
+        log.info("Read certs in file action performed.");
         Project project = e.getProject();
         if (project==null) return;
         ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow("X.509 Cert Buddy");

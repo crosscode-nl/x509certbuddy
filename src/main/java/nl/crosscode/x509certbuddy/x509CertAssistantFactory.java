@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 public class x509CertAssistantFactory implements ToolWindowFactory, EditorFactoryListener, Disposable, DocumentListener {
 
-    private boolean autoDetectCerts = false;
+    private final boolean autoDetectCerts = false;
 
     private static final HashMap<Project,nl.crosscode.x509certbuddy.ui.x509CertAssistant> instances = new HashMap<>();
 
@@ -53,6 +53,7 @@ public class x509CertAssistantFactory implements ToolWindowFactory, EditorFactor
 
     @Override
     public void editorReleased(@NotNull EditorFactoryEvent event) {
+        if (!autoDetectCerts) return;
         event.getEditor().getDocument().removeDocumentListener(this);
         EditorUtilsFactory.getInstance().removeEditor(event.getEditor());
         EditorFactoryListener.super.editorReleased(event);

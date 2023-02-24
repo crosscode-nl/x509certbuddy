@@ -53,7 +53,6 @@ public class x509CertAssistant {
     private JTextPane validationTextPane;
 
     public x509CertAssistant(ToolWindow tw) {
-        log.warn("Constructed x509CertAssistant");
         exporters = new Exporters(x509Certificates,rootPanel);
         tw.setTitleActions(List.of(CBActionManager.buildContextMenu(exporters)));
         PopupHandler.installPopupMenu(certTree,CBActionManager.buildContextMenu(exporters), "X509CertBuddy.CertTree.Actions");
@@ -124,7 +123,6 @@ public class x509CertAssistant {
 
 
     public JPanel getContent() {
-        log.warn("getContent is called");
         return rootPanel;
     }
 
@@ -172,8 +170,6 @@ public class x509CertAssistant {
         root.removeAllChildren();
         List<X509Certificate> rootCerts = x509Certificates.stream().filter(x -> !x509Certificates.stream().anyMatch(y -> y.getSubjectDN().getName().equals(x.getIssuerDN().getName()) && x != y)).collect(Collectors.toList());
         for (X509Certificate cert : rootCerts) {
-            log.warn(cert.getSubjectDN().getName());
-            log.warn(cert.getIssuerDN().getName());
             DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(new X509CertWrapper(cert));
             addChildren(treeNode, cert, x509Certificates);
             root.add(treeNode);
