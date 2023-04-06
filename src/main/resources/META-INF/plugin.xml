@@ -22,8 +22,7 @@
     <change-notes>
         <![CDATA[
         <ul>
-            <li>Removed log messages used during initial development.</li>
-            <li>Fix removing listeners when no listeners are attached.</li>
+            <li>Bumped compatibility range.</li>
         </ul>
         ]]>
     </change-notes>
