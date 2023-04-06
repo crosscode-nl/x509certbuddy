@@ -1,3 +1,7 @@
+# 0.6 - 2022-03-06
+
+* Bumped supported version range
+
 # 0.5 - 2022-02-24
 
 * Removed log messages used during initial development
