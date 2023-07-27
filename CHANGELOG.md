@@ -1,8 +1,12 @@
-# 0.6 - 2022-03-06
+# 0.6 - 2023-07-28
 
 * Bumped supported version range
 
-# 0.5 - 2022-02-24
+# 0.6 - 2023-03-06
+
+* Bumped supported version range
+
+# 0.5 - 2023-02-24
 
 * Removed log messages used during initial development
 * Fix removing listeners when no listeners are attached
