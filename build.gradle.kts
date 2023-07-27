@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "nl.crosscode"
-version = "0.6"
+version = "0.7-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -35,7 +35,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("213")
-        untilBuild.set("231.*")
+        untilBuild.set("232.*")
     }
 
     signPlugin {
