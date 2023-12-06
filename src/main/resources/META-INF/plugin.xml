@@ -23,6 +23,7 @@
         <![CDATA[
         <ul>
             <li>Bumped compatibility range.</li>
+            <li>Fixed usage of soon-to-be deprecated class.</lid>
         </ul>
         ]]>
     </change-notes>

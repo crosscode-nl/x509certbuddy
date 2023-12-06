@@ -1,4 +1,9 @@
-# 0.6 - 2023-07-28
+# 0.8.1 - 2023-12-06
+
+* Bumped supported version range
+* Use org.apache.commons:commons-text instead of org.apache.commons:lang for StringEscapeUtils
+
+# 0.7 - 2023-07-28
 
 * Bumped supported version range
 

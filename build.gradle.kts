@@ -3,10 +3,8 @@ plugins {
     id("org.jetbrains.intellij") version "1.10.0"
 }
 
-
-
 group = "nl.crosscode"
-version = "0.8.0"
+version = "0.8.1"
 
 repositories {
     mavenCentral()
@@ -63,5 +61,7 @@ dependencies {
     testImplementation("io.cucumber:cucumber-junit-platform-engine")
     testImplementation("org.junit.platform:junit-platform-suite")
     testImplementation("org.junit.jupiter:junit-jupiter")
+
+    implementation("org.apache.commons:commons-text:1.11.0")
 
 }

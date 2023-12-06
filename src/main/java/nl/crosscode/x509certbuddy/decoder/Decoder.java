@@ -1,7 +1,6 @@
 package nl.crosscode.x509certbuddy.decoder;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
+import org.apache.commons.text.StringEscapeUtils;
 import java.util.Base64;
 
 public class Decoder {
