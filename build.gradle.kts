@@ -3,8 +3,10 @@ plugins {
     id("org.jetbrains.intellij") version "1.10.0"
 }
 
+
+
 group = "nl.crosscode"
-version = "0.7"
+version = "0.8.0"
 
 repositories {
     mavenCentral()
@@ -45,7 +47,7 @@ tasks {
     }
 
     publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
+        token.set(System.getenv("CROSSCODE_INTELLIJ_PUBLISH_TOKEN"))
     }
 }
 
