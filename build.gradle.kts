@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("org.jetbrains.intellij") version "1.10.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "nl.crosscode"
