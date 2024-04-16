@@ -41,7 +41,7 @@ public class CertRetrieverSteps {
         CertRetriever certRetriever = new CertRetriever(editor);
         context.setBase64certs(certRetriever.retrieveCerts(context.getText()).stream().map(c-> {
             try {
-                return Base64.getEncoder().encodeToString(c.getCertificate().getEncoded());
+                return Base64.getEncoder().encodeToString(c.certificate.getEncoded());
             } catch (CertificateEncodingException e) {
                 throw new RuntimeException(e);
             }

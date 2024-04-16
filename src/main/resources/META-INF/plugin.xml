@@ -35,7 +35,7 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="nl.crosscode.x509certbuddy.x509CertAssistantFactory" id="X.509 Cert Buddy" icon="CertBuddyIcons.CertBuddyToolwindow" />
+        <toolWindow factoryClass="nl.crosscode.x509certbuddy.X509CertAssistantFactory" id="X.509 Cert Buddy" icon="CertBuddyIcons.CertBuddyToolwindow" />
     </extensions>
 
     <actions>

@@ -1,11 +1,11 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.10.0"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("org.jetbrains.kotlin.jvm") version "1.9.23"
+    id("org.jetbrains.intellij") version "1.17.2"
 }
 
 group = "nl.crosscode"
-version = "0.8.2"
+version = "0.9.0"
 
 repositories {
     mavenCentral()
@@ -14,7 +14,7 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2021.3.3")
+    version.set("2023.2.1")
     type.set("IC") // Target IDE Platform
 
     plugins.set(listOf(/* Plugin Dependencies */))
@@ -23,8 +23,8 @@ intellij {
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
 
     withType<Test>{
@@ -35,7 +35,7 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("213")
+        sinceBuild.set("232")
         untilBuild.set("241.*")
     }
 
@@ -48,6 +48,18 @@ tasks {
     publishPlugin {
         token.set(System.getenv("CROSSCODE_INTELLIJ_PUBLISH_TOKEN"))
     }
+
+    compileKotlin {
+        kotlinOptions.jvmTarget = "17"
+    }
+
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "17"
+    }
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 dependencies {
@@ -62,7 +74,5 @@ dependencies {
     testImplementation("io.cucumber:cucumber-junit-platform-engine")
     testImplementation("org.junit.platform:junit-platform-suite")
     testImplementation("org.junit.jupiter:junit-jupiter")
-
-    implementation("org.apache.commons:commons-text:1.11.0")
-
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
 }
