@@ -1,7 +1,7 @@
 package nl.crosscode.x509certbuddy.decoder;
 
-import org.apache.commons.text.StringEscapeUtils;
 import java.util.Base64;
+import java.lang.String;
 
 public class Decoder {
     private final String base64Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -26,7 +26,7 @@ public class Decoder {
         count++;
         if (escapeMode) {
             String escape = "\\"+c;
-            String result = StringEscapeUtils.unescapeJava(escape);
+            String result = escape.translateEscapes();
             if (result.length()==1) {
                 c = result.charAt(0);
             }
