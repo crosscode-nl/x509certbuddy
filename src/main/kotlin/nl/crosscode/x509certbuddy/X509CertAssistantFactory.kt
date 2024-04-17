@@ -7,9 +7,15 @@ import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import nl.crosscode.x509certbuddy.ui.X509CertAssistant
 import nl.crosscode.x509certbuddy.utils.EditorUtilsFactory.instance
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import java.security.Security
 
 class X509CertAssistantFactory : ToolWindowFactory {
     private val autoDetectCerts = false
+
+    init {
+        Security.addProvider(BouncyCastleProvider())
+    }
 
     @Synchronized
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {

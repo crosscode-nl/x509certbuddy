@@ -4,7 +4,6 @@ package nl.crosscode.x509certbuddy.wrappers
 import java.security.cert.X509Certificate
 
 // getHex returns the hexdump of the certificate
-00000000  30 82 05 D2 30 82 04 BA  A0 03 02 01 02 02 10 08  |0...0...........|
 fun getHex(cert: X509Certificate): String {
     val address = 0 // Start address
     val data = cert.encoded
