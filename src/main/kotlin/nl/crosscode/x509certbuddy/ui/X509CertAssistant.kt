@@ -8,7 +8,6 @@ import nl.crosscode.x509certbuddy.decoder.RetrievedCert
 import nl.crosscode.x509certbuddy.ui.CBActionManager.buildContextMenu
 import nl.crosscode.x509certbuddy.wrappers.*
 import java.awt.dnd.DropTarget
-import java.awt.event.ActionEvent
 import java.io.File
 import java.io.IOException
 import java.security.cert.CertificateEncodingException
@@ -17,11 +16,10 @@ import java.security.cert.X509Certificate
 import javax.swing.JPanel
 import javax.swing.JTextPane
 import javax.swing.JTree
-import javax.swing.event.TreeSelectionEvent
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 
-class x509CertAssistant(tw: ToolWindow) {
+class X509CertAssistant(tw: ToolWindow) {
     private val exporters: Exporters
 
     private val x509Certificates: MutableList<X509Certificate> = ArrayList()
@@ -226,7 +224,7 @@ class x509CertAssistant(tw: ToolWindow) {
 
     companion object {
         private val log = Logger.getInstance(
-            x509CertAssistant::class.java
+            X509CertAssistant::class.java
         )
     }
 }

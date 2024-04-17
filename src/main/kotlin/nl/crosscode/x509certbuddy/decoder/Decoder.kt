@@ -20,19 +20,14 @@ class Decoder(val originalOffset: Int) {
         if (isDone) return true
         count++
         if (escapeMode) {
-            val escape = "\\" + c
-            val result = escape.translateEscapes()
-            if (result.length == 1) {
-                c = result[0]
-            }
             escapeMode = false
+            c = unescape(c) ?: return false
         } else if (c == '\\') {
             escapeMode = true
             return false
         }
-        if (c == ' ' || c == '\n' || c == '\r' || c == '\t') {
-            return false
-        }
+
+        if (c == ' ' || c == '\n' || c == '\r' || c == '\t') return false
 
         if (base64Alphabet.indexOf(c) == -1) {
             isDone = true
@@ -50,11 +45,15 @@ class Decoder(val originalOffset: Int) {
         return false
     }
 
-    fun tryDecode(): ByteArray {
-        return Base64.getDecoder().decode(data)
-    }
+    fun tryDecode(): ByteArray = Base64.getDecoder().decode(data)
 
-    fun isOffsetInsideRange(offset: Int): Boolean {
-        return offset >= originalOffset && offset < originalOffset + count
+    fun isOffsetInsideRange(offset: Int): Boolean = offset >= originalOffset && offset < originalOffset + count
+
+    private fun unescape(c: Char): Char? = when (c) {
+        'n' -> '\n'
+        'r' -> '\r'
+        't' -> '\t'
+        '\\' -> '\\'
+        else -> null
     }
 }
