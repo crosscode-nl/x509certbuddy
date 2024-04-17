@@ -27,29 +27,33 @@ class Exporters(private val certificateList: List<X509Certificate?>, private val
     }
 
     fun copyPem() {
-        if (selectedCert == null) return
-        val pem = getPem(selectedCert!!)
-        if (pem == null || pem.isEmpty()) return
-        copyToClipboard(pem)
+        selectedCert?.let {
+            val pem = getPem(it)
+            if (pem.isEmpty()) return
+            copyToClipboard(pem)
+        }
     }
 
     fun exportPEM() {
-        if (selectedCert == null) return
-        val pem = getPem(selectedCert!!)
-        if (pem == null || pem.isEmpty()) return
-        saveToFile(pem.toByteArray(StandardCharsets.UTF_8), selectedCert!!.serialNumber.toString(16) + ".pem")
+        selectedCert?.let {
+            val pem = getPem(it)
+            if (pem.isEmpty()) return
+            saveToFile(pem.toByteArray(StandardCharsets.UTF_8), it.serialNumber.toString(16) + ".pem")
+        }
     }
 
     fun copyBase64() {
-        if (selectedCert == null) return
-        copyToClipboard(getBase64(selectedCert!!))
+        selectedCert?.let {
+            copyToClipboard(getBase64(it))
+        }
     }
 
     fun exportDER() {
-        if (selectedCert == null) return
-        try {
-            saveToFile(selectedCert!!.encoded, selectedCert!!.serialNumber.toString(16) + ".der")
-        } catch (ignored: CertificateEncodingException) {
+        selectedCert?.run {
+            try {
+                saveToFile(encoded, serialNumber.toString(16) + ".der")
+            } catch (ignored: CertificateEncodingException) {
+            }
         }
     }
 
@@ -86,7 +90,7 @@ class Exporters(private val certificateList: List<X509Certificate?>, private val
             if (selectedCert == null) return Optional.empty()
             val builder = StringBuilder()
             val pem = getPem(selectedCert!!)
-            if (pem == null || pem.isEmpty()) return Optional.empty() // this is to check openssl is working...
+            if (pem.isEmpty()) return Optional.empty() // this is to check openssl is working...
 
             builder.append(pem)
             var currentCert = getParent(selectedCert!!)
