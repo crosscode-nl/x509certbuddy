@@ -21,20 +21,20 @@ import javax.swing.tree.DefaultTreeModel
 
 class X509CertAssistant(tw: ToolWindow) {
     private val exporters: Exporters
-
+    private val lock: Any = Any()
     private val x509Certificates: MutableList<X509Certificate> = ArrayList()
     private var selectedCertificate: X509Certificate? = null
     var rootPanel: JPanel? = null
-    var certTree: JTree? = null
-    var certDetailsTextPane: JTextPane? = null
-    var pemTextPane: JTextPane? = null
-    var asn1TextPane: JTextPane? = null
-    var hexTextPane: JTextPane? = null
-    var validationTextPane: JTextPane? = null
+    private var certTree: JTree? = null
+    private var certDetailsTextPane: JTextPane? = null
+    private var pemTextPane: JTextPane? = null
+    private var asn1TextPane: JTextPane? = null
+    private var hexTextPane: JTextPane? = null
+    private var validationTextPane: JTextPane? = null
 
     init {
         exporters = Exporters(x509Certificates, rootPanel!!)
-        tw.setTitleActions(java.util.List.of(buildContextMenu(exporters)))
+        tw.setTitleActions(listOf(buildContextMenu(exporters)))
         PopupHandler.installPopupMenu(certTree!!, buildContextMenu(exporters), "X509CertBuddy.CertTree.Actions")
 
         val model = certTree?.model as DefaultTreeModel
@@ -55,8 +55,8 @@ class X509CertAssistant(tw: ToolWindow) {
                 val certRetriever = CertRetriever(null)
                 addCerts(certRetriever.retrieveCerts(data).stream().map { x: RetrievedCert -> x.certificate }
                     .toList())
-            } catch (e: IOException) {
-            } catch (e: CertificateException) {
+            } catch (_: IOException) {
+            } catch (_: CertificateException) {
             }
         }
     }
@@ -98,10 +98,7 @@ class X509CertAssistant(tw: ToolWindow) {
         hexTextPane!!.text = null
         validationTextPane!!.text = null
         if (selectedCertificate == null) return
-        var details = getCertDetails(selectedCertificate!!)
-        if (details == null) {
-            details = selectedCertificate.toString()
-        }
+        val details = getCertDetails(selectedCertificate!!)
         certDetailsTextPane?.text = details
         certDetailsTextPane?.caretPosition = 0
         val pemString = getPem(selectedCertificate!!)
@@ -113,51 +110,45 @@ class X509CertAssistant(tw: ToolWindow) {
 
 
     fun removeCert() {
-        x509Certificates.remove(selectedCertificate)
+        synchronized(lock) {
+            x509Certificates.remove(selectedCertificate)
+        }
         buildTree()
     }
 
     fun removeAllCerts() {
-        x509Certificates.clear()
+        synchronized(lock) {
+            x509Certificates.clear()
+        }
         buildTree()
     }
 
 
     fun addCerts(certs: List<X509Certificate>) {
-        var newCerts = false
-        for (cert in certs) {
-            if (x509Certificates.stream().noneMatch { x: X509Certificate? ->
-                    try {
-                        return@noneMatch x!!.encoded.contentEquals(cert.encoded)
-                    } catch (e: CertificateEncodingException) {
-                        throw RuntimeException(e)
-                    }
-                }) {
-                newCerts = true
-                break
-            }
+        synchronized(lock) {
+            x509Certificates.addAll(certs)
         }
-
-        if (!newCerts) return
-        x509Certificates.addAll(certs)
         removeDuplicateCerts()
         buildTree()
     }
 
     private fun removeDuplicateCerts() {
-        val certs: MutableList<X509Certificate> = ArrayList()
-        for (cert in x509Certificates) {
-            if (certs.stream().anyMatch { x: X509Certificate ->
-                    try {
-                        return@anyMatch x.encoded.contentEquals(cert.encoded)
-                    } catch (e: CertificateEncodingException) {
-                        return@anyMatch false
-                    }
-                }) continue
-            certs.add(cert)
+        var x509CertificateCopy: List<X509Certificate>
+        synchronized(lock) {
+            x509CertificateCopy = x509Certificates.toList()
         }
-        x509Certificates.clear()
-        x509Certificates.addAll(certs)
+        val certs: MutableList<X509Certificate> = ArrayList()
+        for (cert in x509CertificateCopy) {
+            certs.none { it == cert }.let {
+                if (it) {
+                    certs.add(cert)
+                }
+            }
+        }
+        synchronized(lock) {
+            x509Certificates.clear()
+            x509Certificates.addAll(certs)
+        }
     }
 
     private fun buildTree() {
@@ -165,8 +156,12 @@ class X509CertAssistant(tw: ToolWindow) {
         val model = certTree!!.model as DefaultTreeModel
         val root = DefaultMutableTreeNode("Certs", true)
         root.removeAllChildren()
-        val rootCerts = x509Certificates.stream().filter { x: X509Certificate? ->
-            x509Certificates.stream()
+        var x509CertificateCopy: List<X509Certificate>
+        synchronized(lock) {
+            x509CertificateCopy = x509Certificates.toList()
+        }
+        val rootCerts = x509CertificateCopy.stream().filter { x: X509Certificate? ->
+            x509CertificateCopy.stream()
                 .noneMatch { y: X509Certificate? -> y!!.subjectX500Principal.name == x!!.issuerX500Principal.name && x !== y }
         }
             .toList()
@@ -176,7 +171,7 @@ class X509CertAssistant(tw: ToolWindow) {
                     cert!!
                 )
             )
-            addChildren(treeNode, cert, x509Certificates)
+            addChildren(treeNode, cert, x509CertificateCopy)
             root.add(treeNode)
         }
         model.setRoot(root)
@@ -194,7 +189,7 @@ class X509CertAssistant(tw: ToolWindow) {
         }
     }
 
-    fun addChildren(treeNode: DefaultMutableTreeNode, cert: X509Certificate?, certs: List<X509Certificate?>) {
+    private fun addChildren(treeNode: DefaultMutableTreeNode, cert: X509Certificate?, certs: List<X509Certificate?>) {
         val children = certs.stream()
             .filter { x: X509Certificate? -> x!!.issuerX500Principal.name == cert!!.subjectX500Principal.name && x !== cert }
             .toList()

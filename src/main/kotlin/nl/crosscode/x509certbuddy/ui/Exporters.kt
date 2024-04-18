@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileChooser.FileChooserFactory
 import com.intellij.openapi.fileChooser.FileSaverDescriptor
+import com.intellij.util.application
 import nl.crosscode.x509certbuddy.models.CertModel
 import nl.crosscode.x509certbuddy.utils.getBase64
 import nl.crosscode.x509certbuddy.wrappers.getPem
@@ -125,7 +126,6 @@ class Exporters(private val certificateList: List<X509Certificate?>, private val
         val dlg = FileChooserFactory.getInstance().createSaveFileDialog(fsd, parent)
         val wrapper = dlg.save(fileNameHint) ?: return
         val vf = wrapper.getVirtualFile(true) ?: return
-        val application = ApplicationManager.getApplication()
         if (application.isDispatchThread) {
             application.runWriteAction {
                 try {
