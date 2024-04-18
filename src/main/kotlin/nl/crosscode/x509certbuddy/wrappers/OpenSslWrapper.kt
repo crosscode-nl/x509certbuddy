@@ -87,7 +87,14 @@ fun getValidationBC(certToValidate: JavaX509Certificate, trustedRootCerts: List<
             // Build and verify the certification path
             val builder = CertPathBuilder.getInstance("PKIX", BouncyCastleProvider())
             val pkixCertPathBuilderResult = builder.build(pkixParams) as PKIXCertPathBuilderResult
-            return pkixCertPathBuilderResult.printToString()
+            return "<html>" +
+                    "<body>" +
+                    "<h1>Validation successful</h1>" +
+                    "<pre>"+
+                    pkixCertPathBuilderResult.printToString() +
+                    "</body>" +
+                    "</html>"
+            //return pkixCertPathBuilderResult.printToString()
         } catch (ex: CertPathBuilderException) {
             // Handling exception
             return ex.printToString()

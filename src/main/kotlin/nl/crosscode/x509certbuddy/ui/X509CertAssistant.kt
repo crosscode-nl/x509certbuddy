@@ -1,5 +1,6 @@
 package nl.crosscode.x509certbuddy.ui
 
+import com.intellij.execution.target.value.getTargetEnvironmentValueForLocalPath
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.ui.PopupHandler
@@ -105,7 +106,9 @@ class X509CertAssistant(tw: ToolWindow) {
         val pemString = getPem(selectedCertificate!!)
         pemTextPane?.text = pemString
         asn1TextPane?.text = getAsn1(selectedCertificate!!)
+        hexTextPane?.contentType = "text/html"
         hexTextPane?.text = getHex(selectedCertificate!!)
+        validationTextPane?.contentType = "text/html"
         validationTextPane?.text = getValidation(selectedCertificate!!, x509Certificates)
     }
 
