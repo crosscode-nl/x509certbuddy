@@ -1,5 +1,6 @@
 package nl.crosscode.x509certbuddy.actions
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import nl.crosscode.x509certbuddy.ui.Exporters
@@ -22,5 +23,9 @@ class CopyAllAction(private val exporters: Exporters) : AnAction() {
         val assistant = X509CertAssistantFactory.getInstance(e.project!!)
         e.presentation.isEnabled = assistant?.hasCerts() ?: false
         super.update(e)
+    }
+
+    override fun getActionUpdateThread(): ActionUpdateThread {
+        return ActionUpdateThread.BGT
     }
 }

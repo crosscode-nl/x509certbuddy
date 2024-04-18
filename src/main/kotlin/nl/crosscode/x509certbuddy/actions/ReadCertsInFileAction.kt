@@ -1,5 +1,6 @@
 package nl.crosscode.x509certbuddy.actions
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.diagnostic.Logger
@@ -17,6 +18,9 @@ class ReadCertsInFileAction : AnAction() {
         editorUtils.readCertsFromEditor(editor)
     }
 
+    override fun getActionUpdateThread(): ActionUpdateThread {
+        return ActionUpdateThread.EDT
+    }
 
     companion object {
         private val log = Logger.getInstance(
