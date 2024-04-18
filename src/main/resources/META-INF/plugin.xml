@@ -14,16 +14,22 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-<p>X.509 Cert Buddy is a toolkit that helps users manage X.509 certificates. It can extract certificates in Base64 and PEM format from json, xml, and text documents. It also allows users to drop DER, PEM, JSON, XML, and text files containing certificates. The toolkit will display the certificates in the correct trust hierarchy and permits users to copy PEM, Cert Chain PEM, Base64, or JSON containing all certificates. Furthermore, it enables the export of PEM, Cert Chain PEM, DER, or JSON containing all certificates. The toolkit can be used to convert between different X.509 certificate formats and offers the ability to view the certificate as text, ASN.1, or hex. Additionally, it allows users to validate the certificate.</p>
+<p>X.509 Cert Buddy is a toolkit that helps users manage X.509 certificates. It can extract certificates in Base64 and PEM format from json, xml, and text documents. It also allows users to drop DER, CER, PEM, P7B, P7C, JSON, XML, and text files containing certificates. The toolkit will display the certificates in the correct trust hierarchy and permits users to copy PEM, Cert Chain PEM, Base64, or JSON containing all certificates. Furthermore, it enables the export of PEM, Cert Chain PEM, DER, or JSON containing all certificates. The toolkit can be used to convert between different X.509 certificate formats and offers the ability to view the certificate as text, ASN.1, or hex. Additionally, it allows users to validate the certificate.</p>
 
-<p>In order to fully utilize the functionality of the toolkit, users need to have hexdump and openssl installed. Without these applications, not all information and functionality will be available. To use the plugin, use the action "Display Certs" to display all certificates and use the tool window to view certificate details, debug, and/or convert the certificates.</p>
+<p>To use the plugin, use the action "Display Certs" to display all certificates and use the tool window to view certificate details, debug, and/or convert the certificates.</p>
   ]]></description>
 
     <change-notes>
         <![CDATA[
         <ul>
-            <li>Bumped compatibility range.</li>
-            <li>Fixed usage of soon-to-be deprecated class.</lid>
+            <li>Removed dependency on org.apache.commons-text</li>
+            <li>Upgraded to Java 17</li>
+            <li>Minimal supported version is now 2023.2.1</li>
+            <li>Migrated to Kotlin</li>
+            <li>Generate colorful hexdump from code instead of calling hexdump</li>
+            <li>Use bouncy castle instead of calling openssl</li>
+            <li>Improve threading model</li>
+            <li>Register filetypes .pem, .crt, .cer, .der, .p7b, .p7c</li>
         </ul>
         ]]>
     </change-notes>
@@ -35,7 +41,13 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="nl.crosscode.x509certbuddy.x509CertAssistantFactory" id="X.509 Cert Buddy" icon="CertBuddyIcons.CertBuddyToolwindow" />
+        <toolWindow factoryClass="nl.crosscode.x509certbuddy.X509CertAssistantFactory" id="X.509 Cert Buddy" icon="CertBuddyIcons.CertBuddyToolwindow" />
+        <fileType
+                name="PEM file"
+                implementationClass="nl.crosscode.x509certbuddy.filetypes.PEMFileType"
+                fieldName="INSTANCE"
+                language=""
+                extensions="pem;cer;der;crt;ca-bundle;p7b;p7c"/>
     </extensions>
 
     <actions>

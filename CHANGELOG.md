@@ -1,4 +1,15 @@
-# 0.8.2 - 2024-04-26
+# 0.9.0 - 2024-04-16
+
+* Removed dependency on org.apache.commons-text
+* Upgraded to Java 17
+* Minimal supported version is now 2023.2.1
+* Migrated to Kotlin
+* Generate colorful hexdump from code instead of calling hexdump
+* Use bouncy castle instead of calling openssl
+* Improve threading model
+* Register filetypes .pem, .crt, .cer, .der, .p7b, .p7c
+
+# 0.8.2 - 2024-03-26
 
 * Bumped supported version range
 
