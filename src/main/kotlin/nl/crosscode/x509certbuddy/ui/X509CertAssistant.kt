@@ -10,7 +10,6 @@ import nl.crosscode.x509certbuddy.wrappers.*
 import java.awt.dnd.DropTarget
 import java.io.File
 import java.io.IOException
-import java.security.cert.CertificateEncodingException
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import javax.swing.JPanel
@@ -77,12 +76,14 @@ class X509CertAssistant(tw: ToolWindow) {
                             exporters.setSelectedCertificate(selectedCertificate)
                             updateFieldsWithCertDetails()
                         }
+
                         else -> {
                             resetUIToNoTreeSelection()
                             return
                         }
                     }
                 }
+
                 else -> {
                     resetUIToNoTreeSelection()
                     return
@@ -139,12 +140,11 @@ class X509CertAssistant(tw: ToolWindow) {
         }
         val certs: MutableList<X509Certificate> = ArrayList()
         for (cert in x509CertificateCopy) {
-            certs.none { it == cert }.let {
-                if (it) {
-                    certs.add(cert)
-                }
+            if (certs.none { it == cert }) {
+                certs.add(cert)
             }
         }
+
         synchronized(lock) {
             x509Certificates.clear()
             x509Certificates.addAll(certs)

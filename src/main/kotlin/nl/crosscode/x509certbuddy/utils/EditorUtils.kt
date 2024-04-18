@@ -1,22 +1,17 @@
 package nl.crosscode.x509certbuddy.utils
 
-import com.intellij.openapi.application.Application
-import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.Inlay
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.util.application
+import nl.crosscode.x509certbuddy.X509CertAssistantFactory
 import nl.crosscode.x509certbuddy.decoder.CertRetriever
 import nl.crosscode.x509certbuddy.decoder.RetrievedCert
 import nl.crosscode.x509certbuddy.ui.CertEditorElementRender
-import nl.crosscode.x509certbuddy.X509CertAssistantFactory
-import java.security.cert.CertificateEncodingException
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import java.util.*
 import java.util.function.Consumer
-import java.util.stream.Collectors
 
 class EditorUtils {
     fun readCertsFromEditor(editor: Editor?) {
@@ -64,12 +59,9 @@ class EditorUtils {
             var certsUpdate = true
             application.runReadAction {
                 if (certsOfEditor != null && certsOfEditor.size == retrievedCerts.size) {
-                    certsUpdate = false
-                    retrievedCerts.any {rc ->
+                    certsUpdate = !retrievedCerts.all {rc ->
                         certsOfEditor.any { rc.certificate==it }
-                    }.let { if (it) {
-                        certsUpdate = true
-                    }}
+                    }
                 }
             }
             if (!certsUpdate) return

@@ -64,7 +64,7 @@ dependencies {
     testImplementation(platform("io.cucumber:cucumber-bom:7.9.0"))
 
     testImplementation("org.picocontainer:picocontainer:2.15")
-    testImplementation("io.cucumber:cucumber-picocontainer:7.9.0");
+    testImplementation("io.cucumber:cucumber-picocontainer:7.9.0")
 
     testImplementation("io.cucumber:cucumber-java")
     testImplementation("io.cucumber:cucumber-junit-platform-engine")

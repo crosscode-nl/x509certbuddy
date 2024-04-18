@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CertRetrieverSteps {
     private final CertRetrieverStepsContext context;
-    private ClassLoader classLoader = getClass().getClassLoader();
+    private final ClassLoader classLoader = getClass().getClassLoader();
 
     public CertRetrieverSteps(CertRetrieverStepsContext context) {
         this.context = context;
