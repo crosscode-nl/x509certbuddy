@@ -36,6 +36,12 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="nl.crosscode.x509certbuddy.X509CertAssistantFactory" id="X.509 Cert Buddy" icon="CertBuddyIcons.CertBuddyToolwindow" />
+        <fileType
+                name="Simple File"
+                implementationClass="nl.crosscode.x509certbuddy.filetypes.PEMFileType"
+                fieldName="INSTANCE"
+                language=""
+                extensions="pem;cer;der;crt;ca-bundle;p7b;p7s"/>
     </extensions>
 
     <actions>
