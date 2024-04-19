@@ -21,7 +21,7 @@ class X509CertAssistantFactory : ToolWindowFactory {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val x509CertAssistant = getInstance(project) { X509CertAssistant(toolWindow) }
         val content = toolWindow.contentManager.factory.createContent(
-            x509CertAssistant!!.rootPanel, "", false
+            x509CertAssistant?.content, "", false
         )
         toolWindow.contentManager.addContent(content)
         if (!autoDetectCerts) return
