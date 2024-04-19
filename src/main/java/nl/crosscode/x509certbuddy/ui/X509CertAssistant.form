@@ -147,7 +147,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <scrollpane id="724d4">
+                      <scrollpane id="724d4" binding="validationScrollPane">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>

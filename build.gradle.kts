@@ -25,6 +25,7 @@ tasks {
     withType<JavaCompile> {
         sourceCompatibility = "17"
         targetCompatibility = "17"
+        options.compilerArgs.add("-Xlint:deprecation")
     }
 
     withType<Test>{

@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import java.awt.*;
 import java.awt.dnd.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -28,10 +29,8 @@ import java.util.stream.Collectors;
 public class X509CertAssistant {
 
     private static final Logger log = Logger.getInstance(X509CertAssistant.class);
-    private String pemString;
 
-    private Exporters exporters;
-//    private String base64String;
+    private final Exporters exporters;
     private final List<X509Certificate> x509Certificates = new ArrayList<>();
     private X509Certificate selectedCertificate = null;
     private JPanel rootPanel;
@@ -41,6 +40,7 @@ public class X509CertAssistant {
     private JTextPane asn1TextPane;
     private JTextPane hexTextPane;
     private JTextPane validationTextPane;
+    private JScrollPane validationScrollPane;
 
     public X509CertAssistant(ToolWindow tw) {
         exporters = new Exporters(x509Certificates,rootPanel);
@@ -92,20 +92,29 @@ public class X509CertAssistant {
         }
         certDetailsTextPane.setText(details);
         certDetailsTextPane.setCaretPosition(0);
-        pemString = OpenSslWrapper.getPem(selectedCertificate);
+        String pemString = OpenSslWrapper.getPem(selectedCertificate);
         pemTextPane.setText(pemString);
         asn1TextPane.setText(OpenSslWrapper.getAsn1(selectedCertificate));
+        hexTextPane.setContentType("text/html");
         hexTextPane.setText(HexDumpWrapper.getHex(selectedCertificate));
+        validationTextPane.setContentType("text/html");
         validationTextPane.setText(OpenSslWrapper.getValidation(selectedCertificate, x509Certificates));
+       // SwingUtilities.invokeLater(new Runnable() {
+         //   @Override
+           // public void run() {
+        validationScrollPane.getViewport().setViewPosition( new Point(0, 0) );
+            //}
+       // });
+     //   ((JScrollPane)validationTextPane.getParent()).getVerticalScrollBar().setValue(0);
     }
 
 
-    public void removeCert(ActionEvent e) {
+    public void removeCert() {
         x509Certificates.remove(selectedCertificate);
         buildTree();
     }
 
-    public void removeAllCerts(ActionEvent e) {
+    public void removeAllCerts() {
         x509Certificates.clear();
         buildTree();
     }
@@ -117,21 +126,6 @@ public class X509CertAssistant {
     }
 
     public void addCerts(List<X509Certificate> certs) {
-        boolean newCerts = false;
-        for (X509Certificate cert : certs) {
-            if (x509Certificates.stream().noneMatch(x-> {
-                try {
-                    return Arrays.equals(x.getEncoded(),cert.getEncoded());
-                } catch (CertificateEncodingException e) {
-                    throw new RuntimeException(e);
-                }
-            })) {
-                newCerts = true;
-                break;
-            }
-        }
-
-        if (!newCerts) return;
         x509Certificates.addAll(certs);
         removeDuplicateCerts();
         buildTree();
