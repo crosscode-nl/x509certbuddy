@@ -4,16 +4,19 @@ import com.intellij.execution.target.value.getTargetEnvironmentValueForLocalPath
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.ui.PopupHandler
+import io.ktor.util.*
 import nl.crosscode.x509certbuddy.decoder.CertRetriever
 import nl.crosscode.x509certbuddy.decoder.RetrievedCert
 import nl.crosscode.x509certbuddy.ui.CBActionManager.buildContextMenu
 import nl.crosscode.x509certbuddy.wrappers.*
+import java.awt.Rectangle
 import java.awt.dnd.DropTarget
 import java.io.File
 import java.io.IOException
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import javax.swing.JPanel
+import javax.swing.JScrollPane
 import javax.swing.JTextPane
 import javax.swing.JTree
 import javax.swing.tree.DefaultMutableTreeNode
@@ -31,6 +34,11 @@ class X509CertAssistant(tw: ToolWindow) {
     private var asn1TextPane: JTextPane? = null
     private var hexTextPane: JTextPane? = null
     private var validationTextPane: JTextPane? = null
+    private var certDetailsScrollPane: JScrollPane? = null
+    private var pemScrollPane: JScrollPane? = null
+    private var asn1ScrollPane: JScrollPane? = null
+    private var hexScrollPane: JScrollPane? = null
+    private var validationScrollPane: JScrollPane? = null
 
     init {
         exporters = Exporters(x509Certificates, rootPanel!!)
@@ -100,16 +108,20 @@ class X509CertAssistant(tw: ToolWindow) {
         hexTextPane!!.text = null
         validationTextPane!!.text = null
         if (selectedCertificate == null) return
-        val details = getCertDetails(selectedCertificate!!)
-        certDetailsTextPane?.text = details
+        certDetailsTextPane?.contentType = "text/html"
+        certDetailsTextPane?.text = getCertDetails(selectedCertificate!!)
         certDetailsTextPane?.caretPosition = 0
         val pemString = getPem(selectedCertificate!!)
         pemTextPane?.text = pemString
+        pemTextPane?.caretPosition = 0
         asn1TextPane?.text = getAsn1(selectedCertificate!!)
+        asn1TextPane?.caretPosition = 0
         hexTextPane?.contentType = "text/html"
         hexTextPane?.text = getHex(selectedCertificate!!)
+        hexTextPane?.caretPosition = 0
         validationTextPane?.contentType = "text/html"
         validationTextPane?.text = getValidation(selectedCertificate!!, x509Certificates)
+        validationTextPane?.caretPosition = 0
     }
 
 
@@ -134,6 +146,7 @@ class X509CertAssistant(tw: ToolWindow) {
         }
         removeDuplicateCerts()
         buildTree()
+
     }
 
     private fun removeDuplicateCerts() {

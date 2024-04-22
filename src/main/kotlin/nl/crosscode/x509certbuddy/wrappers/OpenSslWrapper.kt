@@ -11,13 +11,59 @@ import java.io.File
 import java.io.IOException
 import java.io.StringWriter
 import java.nio.charset.StandardCharsets
+import java.security.PublicKey
 import java.security.cert.*
 import java.security.cert.X509Certificate
+import java.time.LocalDate
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 import java.security.cert.X509Certificate as JavaX509Certificate
 
 fun getCertDetails(cert: JavaX509Certificate): String {
-    return cert.printToString()
+    val doc = StringBuilder()
+    doc.append("<html>" +
+            "<head>" +
+            "<style>" +
+            "body { font-family: monospace; background-color: #222222; }" +
+            "b { color: #0000FF; }" +
+            "td { vertical-align: top; text-style: strong; }" +
+            "</style></head>")
+    doc.append("<body><table>")
+
+    var validityCol = "red"
+    val now = Calendar.getInstance().time
+    if (cert.notBefore <= now && now <= cert.notAfter) {
+        validityCol = "green"
+    }
+    val kv = listOf(
+        "Version" to cert.version,
+        "Subject" to "<span style=\"font-size: large; color: white; \">${cert.subjectX500Principal.name}</span>",
+        "Issuer" to cert.issuerX500Principal.name,
+        "SerialNumber" to cert.serialNumber.toString(16),
+        "PubKey" to "<pre>${getPem(cert.publicKey)}</pre>",
+        "Validity" to "<span style=\"color: $validityCol;\">${cert.notBefore} to ${cert.notAfter}</span>",
+        "Signature Algorithm" to cert.sigAlgName,
+        "Raw" to "<pre>${cert.printToString()}</pre>"
+    )
+    for ((k, v) in kv) {
+        doc.append("<tr><td>$k:</td><td>$v</td></tr>")
+    }
+
+    doc.append("</table></body></html>")
+    return doc.printToString()
 }
+
+
+
+fun getPem(publicKey: PublicKey): String {
+    val stringWriter = StringWriter()
+    val pemWriter = JcaPEMWriter(stringWriter)
+    pemWriter.writeObject(publicKey)
+    pemWriter.close()
+    return stringWriter.toString()
+}
+
 
 fun getPem(cert: JavaX509Certificate): String {
     val stringWriter = StringWriter()
@@ -94,7 +140,6 @@ fun getValidationBC(certToValidate: JavaX509Certificate, trustedRootCerts: List<
                     pkixCertPathBuilderResult.printToString() +
                     "</body>" +
                     "</html>"
-            //return pkixCertPathBuilderResult.printToString()
         } catch (ex: CertPathBuilderException) {
             // Handling exception
             return ex.printToString()

@@ -43,7 +43,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <scrollpane id="1247d">
+                      <scrollpane id="1247d" binding="certDetailsScrollPane">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -69,7 +69,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <scrollpane id="5bb9e">
+                      <scrollpane id="5bb9e" binding="pemScrollPane">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -95,7 +95,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <scrollpane id="9227e">
+                      <scrollpane id="9227e" binding="asn1ScrollPane">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -121,7 +121,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <scrollpane id="6ef46">
+                      <scrollpane id="6ef46" binding="hexScrollPane">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -147,7 +147,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <scrollpane id="f9208">
+                      <scrollpane id="f9208" binding="validationScrollPane">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>

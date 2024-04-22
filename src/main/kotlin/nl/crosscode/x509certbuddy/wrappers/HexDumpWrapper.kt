@@ -10,10 +10,9 @@ fun getHex(cert: X509Certificate): String {
             "<style>" +
             "body { font-family: monospace; background-color: #222222; }" +
             "b { color: #0000FF; }" +
-            "</style>" +
-            "<body><pre>")
+            "</style></head><body><pre>")
     doc.append(renderHex(cert.encoded))
-    doc.append("</body></html></pre>")
+    doc.append("</pre></body></html>")
     return doc.toString()
 }
 
