@@ -1,9 +1,19 @@
 @file:JvmName("HexDumpWrapper")
 package nl.crosscode.x509certbuddy.wrappers
 
+import kotlinx.html.dom.append
+import kotlinx.html.*
+import kotlinx.html.dom.serialize
 import java.security.cert.X509Certificate
 
 fun getHex(cert: X509Certificate): String {
+    val bdy = createStyledHtmlDocument().append.body {
+        pre {
+            +renderHex(cert.encoded)
+        }
+    }
+    return bdy.serialize(false)
+    /*
     val doc = StringBuilder()
     doc.append("<html>" +
             "<head>" +
@@ -14,6 +24,11 @@ fun getHex(cert: X509Certificate): String {
     doc.append(renderHex(cert.encoded))
     doc.append("</pre></body></html>")
     return doc.toString()
+    */
+}
+
+fun PRE.addHex(cert: X509Certificate) {
+    +renderHex(cert.encoded)
 }
 
 fun renderHex(data: ByteArray): String {
