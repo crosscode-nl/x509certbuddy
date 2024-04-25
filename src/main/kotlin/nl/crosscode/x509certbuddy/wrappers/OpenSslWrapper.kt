@@ -2,6 +2,9 @@
 package nl.crosscode.x509certbuddy.wrappers
 
 import com.jetbrains.rd.util.string.printToString
+import nl.crosscode.x509certbuddy.ui.html.components.cell
+import nl.crosscode.x509certbuddy.ui.html.components.row
+import nl.crosscode.x509certbuddy.ui.html.components.table
 import org.apache.commons.io.FileUtils
 import org.bouncycastle.asn1.util.ASN1Dump
 import org.bouncycastle.cert.X509CertificateHolder
@@ -13,11 +16,7 @@ import java.io.StringWriter
 import java.nio.charset.StandardCharsets
 import java.security.PublicKey
 import java.security.cert.*
-import java.security.cert.X509Certificate
-import java.time.LocalDate
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
 import java.security.cert.X509Certificate as JavaX509Certificate
 
 fun getCertDetails(cert: JavaX509Certificate): String {
@@ -29,7 +28,7 @@ fun getCertDetails(cert: JavaX509Certificate): String {
             "b { color: #0000FF; }" +
             "td { vertical-align: top; text-style: strong; }" +
             "</style></head>")
-    doc.append("<body><table>")
+    doc.append("<body>")
 
     var validityCol = "red"
     val now = Calendar.getInstance().time
@@ -46,11 +45,17 @@ fun getCertDetails(cert: JavaX509Certificate): String {
         "Signature Algorithm" to cert.sigAlgName,
         "Raw" to "<pre>${cert.printToString()}</pre>"
     )
-    for ((k, v) in kv) {
-        doc.append("<tr><td>$k:</td><td>$v</td></tr>")
-    }
 
-    doc.append("</table></body></html>")
+    table{
+        for ((k, v) in kv) {
+            row {
+                cell(k) {}
+                cell(v.toString()) {}
+            }
+        }
+    }.serialize(doc)
+
+    doc.append("</body></html>")
     return doc.printToString()
 }
 
@@ -104,7 +109,7 @@ fun getValidation(cert: JavaX509Certificate, certificateList: List<JavaX509Certi
     }
 }
 // getValidationBC returns the validation of the certificate using Bouncy Castle
-fun getValidationBC(certToValidate: JavaX509Certificate, trustedRootCerts: List<X509Certificate>, intermediateCerts: List<X509Certificate>): String {
+fun getValidationBC(certToValidate: JavaX509Certificate, trustedRootCerts: List<JavaX509Certificate>, intermediateCerts: List<JavaX509Certificate>): String {
         try {
             // Create the selector that specifies the starting certificate
             val selector = X509CertSelector()
