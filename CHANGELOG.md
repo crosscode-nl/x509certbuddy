@@ -1,3 +1,7 @@
+# 0.10.0 - 2024-08-09
+
+* Bumped supported version range
+
 # 0.9.0 - 2024-04-16
 
 * Removed dependency on org.apache.commons-text
