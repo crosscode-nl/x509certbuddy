@@ -22,14 +22,7 @@
     <change-notes>
         <![CDATA[
         <ul>
-            <li>Removed dependency on org.apache.commons-text</li>
-            <li>Upgraded to Java 17</li>
-            <li>Minimal supported version is now 2023.2.1</li>
-            <li>Migrated to Kotlin</li>
-            <li>Generate colorful hexdump from code instead of calling hexdump</li>
-            <li>Use bouncy castle instead of calling openssl</li>
-            <li>Improve threading model</li>
-            <li>Register filetypes .pem, .crt, .cer, .der, .p7b, .p7c</li>
+            <li>Version bump to support newer IDE's</li>
         </ul>
         ]]>
     </change-notes>

@@ -1,3 +1,7 @@
+# 0.11.0 - 2024-11-14
+
+* Bumped supported version range
+
 # 0.10.0 - 2024-08-09
 
 * Bumped supported version range
